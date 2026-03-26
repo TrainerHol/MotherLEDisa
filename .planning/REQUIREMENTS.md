@@ -1,0 +1,163 @@
+# Requirements: MotherLEDisa
+
+**Defined:** 2025-03-25
+**Core Value:** Users can create and save their own custom LED animations with frame-by-frame control over color, position, and timing — not just pick from presets.
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### BLE Connection
+
+- [ ] **BLE-01**: User can scan for nearby MELK/ELK/LEDBLE devices
+- [ ] **BLE-02**: User can connect to a discovered device
+- [ ] **BLE-03**: User can disconnect from a connected device
+- [x] **BLE-04**: App auto-reconnects when connection drops unexpectedly
+- [ ] **BLE-05**: User can see list of connected devices
+- [ ] **BLE-06**: User can switch between multiple connected devices
+
+### Basic Control
+
+- [ ] **CTRL-01**: User can turn tower on/off with single tap
+- [ ] **CTRL-02**: User can select any RGB color via color wheel
+- [ ] **CTRL-03**: User can adjust brightness via slider with real-time preview
+- [ ] **CTRL-04**: User can select from built-in hardware effects (fade, jump, blink, breathing)
+- [ ] **CTRL-05**: User can adjust effect speed
+
+### Timeline Animation
+
+- [ ] **ANIM-01**: User can create animation with keyframes on a timeline
+- [ ] **ANIM-02**: User can set color for each keyframe
+- [ ] **ANIM-03**: User can set position/segment for each keyframe (different heights = different colors)
+- [ ] **ANIM-04**: User can drag keyframes to adjust timing
+- [ ] **ANIM-05**: User can preview animation in app before sending to device
+- [ ] **ANIM-06**: User can play animation on connected tower(s)
+- [ ] **ANIM-07**: User can pause and stop animation playback
+- [ ] **ANIM-08**: User can create patterns (sine waves, gradients) applied to segments
+
+### Sound Reactive
+
+- [ ] **SOUND-01**: User can enable sound-reactive mode using device's internal microphone
+- [ ] **SOUND-02**: User can adjust sound threshold (sensitivity)
+- [ ] **SOUND-03**: User can assign color palette for sound triggers
+- [ ] **SOUND-04**: User can trigger custom animations from sound (not just presets)
+
+### Multi-Tower
+
+- [ ] **MULTI-01**: User can control multiple towers simultaneously
+- [ ] **MULTI-02**: User can enable mirror mode (all towers show same animation)
+- [ ] **MULTI-03**: User can enable offset mode (staggered timing across towers)
+- [ ] **MULTI-04**: User can enable cascade mode (when one tower finishes, next starts)
+- [ ] **MULTI-05**: User can define tower ordering for offset/cascade modes
+- [ ] **MULTI-06**: User can enable independent mode (each tower controlled separately)
+
+### Preset Library
+
+- [ ] **PRESET-01**: User can save current animation as named preset
+- [ ] **PRESET-02**: User can view list of saved presets
+- [ ] **PRESET-03**: User can apply saved preset to connected tower(s)
+- [ ] **PRESET-04**: User can delete saved presets
+- [ ] **PRESET-05**: Presets persist across app restarts
+
+### User Experience
+
+- [ ] **UX-01**: App has dedicated screen for device discovery and connection
+- [ ] **UX-02**: App has dedicated screen for basic controls (power, color, brightness)
+- [ ] **UX-03**: App has dedicated screen for timeline animation editor
+- [ ] **UX-04**: App has dedicated screen for sound-reactive configuration
+- [ ] **UX-05**: App has dedicated screen for multi-tower orchestration
+- [ ] **UX-06**: App has dedicated screen for preset library
+- [ ] **UX-07**: Navigation between screens is intuitive and consistent
+- [ ] **UX-08**: Real-time preview shows current tower state
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Background Operation
+
+- **BG-01**: App maintains BLE connections when backgrounded
+- **BG-02**: Sound-reactive mode continues when screen is off
+
+### Advanced Audio
+
+- **AUDIO-01**: User can map frequency bands (bass/mids/highs) to different animation parameters
+- **AUDIO-02**: User can see frequency spectrum visualization
+
+### Scheduling
+
+- **SCHED-01**: User can schedule presets to activate at specific times
+- **SCHED-02**: User can schedule power on/off
+
+## Out of Scope
+
+Explicitly excluded. Documented to prevent scope creep.
+
+| Feature | Reason |
+|---------|--------|
+| iOS version | Android-first; defer to v2 if successful |
+| Cloud sync | Local-only for v1; no backend complexity |
+| Social features/sharing | Not core use case; adds complexity |
+| Smart home integration (HomeKit, Alexa) | Massive complexity for narrow use case |
+| Phone microphone for sound | User stated phone mic is "useless" — device mic only |
+| Account/login | No need for BLE-only app |
+| Subscriptions/paywalls | User wants free app; no monetization gates |
+| Ads | Focus on UX; no ad interruptions |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| BLE-01 | Phase 1 | Pending |
+| BLE-02 | Phase 1 | Pending |
+| BLE-03 | Phase 1 | Pending |
+| BLE-04 | Phase 1 | Complete |
+| BLE-05 | Phase 1 | Pending |
+| BLE-06 | Phase 1 | Pending |
+| CTRL-01 | Phase 1 | Pending |
+| CTRL-02 | Phase 1 | Pending |
+| CTRL-03 | Phase 1 | Pending |
+| CTRL-04 | Phase 1 | Pending |
+| CTRL-05 | Phase 1 | Pending |
+| ANIM-01 | Phase 2 | Pending |
+| ANIM-02 | Phase 2 | Pending |
+| ANIM-03 | Phase 2 | Pending |
+| ANIM-04 | Phase 2 | Pending |
+| ANIM-05 | Phase 2 | Pending |
+| ANIM-06 | Phase 2 | Pending |
+| ANIM-07 | Phase 2 | Pending |
+| ANIM-08 | Phase 2 | Pending |
+| SOUND-01 | Phase 3 | Pending |
+| SOUND-02 | Phase 3 | Pending |
+| SOUND-03 | Phase 3 | Pending |
+| SOUND-04 | Phase 3 | Pending |
+| MULTI-01 | Phase 4 | Pending |
+| MULTI-02 | Phase 4 | Pending |
+| MULTI-03 | Phase 4 | Pending |
+| MULTI-04 | Phase 4 | Pending |
+| MULTI-05 | Phase 4 | Pending |
+| MULTI-06 | Phase 4 | Pending |
+| PRESET-01 | Phase 2 | Pending |
+| PRESET-02 | Phase 2 | Pending |
+| PRESET-03 | Phase 2 | Pending |
+| PRESET-04 | Phase 2 | Pending |
+| PRESET-05 | Phase 2 | Pending |
+| UX-01 | Phase 1 | Pending |
+| UX-02 | Phase 1 | Pending |
+| UX-03 | Phase 2 | Pending |
+| UX-04 | Phase 3 | Pending |
+| UX-05 | Phase 4 | Pending |
+| UX-06 | Phase 2 | Pending |
+| UX-07 | Phase 1 | Pending |
+| UX-08 | Phase 1 | Pending |
+
+**Coverage:**
+- v1 requirements: 42 total
+- Mapped to phases: 42
+- Unmapped: 0
+
+---
+*Requirements defined: 2025-03-25*
+*Last updated: 2025-03-25 after roadmap creation*
