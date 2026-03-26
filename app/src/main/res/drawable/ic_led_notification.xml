@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+
+    <!-- LED tower icon for notification -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M12,2C11.45,2 11,2.45 11,3V4H13V3C13,2.45 12.55,2 12,2ZM8,5C7.45,5 7,5.45 7,6V18C7,18.55 7.45,19 8,19H16C16.55,19 17,18.55 17,18V6C17,5.45 16.55,5 16,5H8ZM9,7H15V9H9V7ZM9,10H15V12H9V10ZM9,13H15V15H9V13ZM9,16H15V18H9V16ZM10,20V21C10,21.55 10.45,22 11,22H13C13.55,22 14,21.55 14,21V20H10Z"/>
+</vector>
