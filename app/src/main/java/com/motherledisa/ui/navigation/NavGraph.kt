@@ -3,6 +3,7 @@ package com.motherledisa.ui.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bluetooth
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -22,6 +23,7 @@ import androidx.navigation.toRoute
 import com.motherledisa.ui.animation.AnimationEditorScreen
 import com.motherledisa.ui.control.ControlScreen
 import com.motherledisa.ui.device.DeviceListScreen
+import com.motherledisa.ui.preset.PresetLibraryScreen
 
 /**
  * Main navigation graph with bottom navigation bar.
@@ -66,6 +68,20 @@ fun NavGraph(
                     icon = { Icon(Icons.Default.Tune, contentDescription = "Control") },
                     label = { Text("Control") }
                 )
+                NavigationBarItem(
+                    selected = currentDestination?.hasRoute<Screen.PresetLibrary>() == true,
+                    onClick = {
+                        navController.navigate(Screen.PresetLibrary()) {
+                            popUpTo(Screen.DeviceList) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    icon = { Icon(Icons.Default.Favorite, contentDescription = "Presets") },
+                    label = { Text("Presets") }
+                )
             }
         }
     ) { padding ->
@@ -87,9 +103,11 @@ fun NavGraph(
                 )
             }
             composable<Screen.PresetLibrary> {
-                // PresetLibraryScreen will be added in Plan 05
-                // Placeholder for now - redirect to device list
-                DeviceListScreen(navController = navController)
+                PresetLibraryScreen(
+                    onNavigateToEditor = { animationId ->
+                        navController.navigate(Screen.AnimationEditor(animationId))
+                    }
+                )
             }
         }
     }
