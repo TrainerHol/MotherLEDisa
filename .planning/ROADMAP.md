@@ -82,7 +82,12 @@ Plans:
   3. User can enable offset mode (staggered timing across towers)
   4. User can enable cascade mode (tower-to-tower relay animations)
   5. User can define tower ordering for choreographed modes
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 04-01-PLAN.md — OrchestrationMode enum and OrchestrationManager domain logic
+- [ ] 04-02-PLAN.md — UI components (mode selector, tower list, offset slider, independent config)
+- [ ] 04-03-PLAN.md — OrchestrateScreen and OrchestrateViewModel
+- [ ] 04-04-PLAN.md — Navigation integration with Orchestrate tab
 **UI hint**: yes
 
 ## Progress
@@ -95,4 +100,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. BLE Foundation & Basic Control | 3/3 | Complete | 2026-03-28 |
 | 2. Timeline Animation & Presets | 5/5 | Complete | 2026-03-29 |
 | 3. Sound-Reactive Mode | 4/4 | Complete | 2026-03-29 |
-| 4. Multi-Tower Orchestration | 0/TBD | Not started | - |
+| 4. Multi-Tower Orchestration | 0/4 | In Progress | - |
