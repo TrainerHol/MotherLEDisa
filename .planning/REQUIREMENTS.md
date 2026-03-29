@@ -40,7 +40,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SOUND-01**: User can enable sound-reactive mode using device's internal microphone
 - [x] **SOUND-02**: User can adjust sound threshold (sensitivity)
 - [x] **SOUND-03**: User can assign color palette for sound triggers
-- [ ] **SOUND-04**: User can trigger custom animations from sound (not just presets)
+- [x] **SOUND-04**: User can trigger custom animations from sound (not just presets)
 
 ### Multi-Tower
 
@@ -64,7 +64,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **UX-01**: App has dedicated screen for device discovery and connection
 - [x] **UX-02**: App has dedicated screen for basic controls (power, color, brightness)
 - [x] **UX-03**: App has dedicated screen for timeline animation editor
-- [ ] **UX-04**: App has dedicated screen for sound-reactive configuration
+- [x] **UX-04**: App has dedicated screen for sound-reactive configuration
 - [ ] **UX-05**: App has dedicated screen for multi-tower orchestration
 - [x] **UX-06**: App has dedicated screen for preset library
 - [x] **UX-07**: Navigation between screens is intuitive and consistent
@@ -132,7 +132,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SOUND-01 | Phase 3 | Complete |
 | SOUND-02 | Phase 3 | Complete |
 | SOUND-03 | Phase 3 | Complete |
-| SOUND-04 | Phase 3 | Pending |
+| SOUND-04 | Phase 3 | Complete |
 | MULTI-01 | Phase 4 | Pending |
 | MULTI-02 | Phase 4 | Pending |
 | MULTI-03 | Phase 4 | Pending |
@@ -147,7 +147,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-01 | Phase 1 | Complete |
 | UX-02 | Phase 1 | Complete |
 | UX-03 | Phase 2 | Complete |
-| UX-04 | Phase 3 | Pending |
+| UX-04 | Phase 3 | Complete |
 | UX-05 | Phase 4 | Pending |
 | UX-06 | Phase 2 | Complete |
 | UX-07 | Phase 1 | Complete |
