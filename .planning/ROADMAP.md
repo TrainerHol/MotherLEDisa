@@ -13,8 +13,8 @@ MotherLEDisa delivers custom LED animation control for MELK-OT21 tower lights th
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: BLE Foundation & Basic Control** - Connect to towers and control power, color, brightness
-- [ ] **Phase 2: Timeline Animation & Presets** - Create keyframe animations and save them as presets
-- [ ] **Phase 3: Sound-Reactive Mode** - Trigger animations from device microphone audio
+- [x] **Phase 2: Timeline Animation & Presets** - Create keyframe animations and save them as presets
+- [ ] **Phase 3: Sound-Reactive Mode** - Configure tower's built-in microphone for autonomous sound response
 - [ ] **Phase 4: Multi-Tower Orchestration** - Coordinate multiple towers with mirror, offset, and cascade modes
 
 ## Phase Details
@@ -56,15 +56,20 @@ Plans:
 **UI hint**: yes
 
 ### Phase 3: Sound-Reactive Mode
-**Goal**: Users can trigger custom animations from audio detected by the device microphone
+**Goal**: Users can configure tower's built-in microphone for autonomous sound-reactive effects with custom sensitivity and color palettes
 **Depends on**: Phase 2
 **Requirements**: SOUND-01, SOUND-02, SOUND-03, SOUND-04, UX-04
 **Success Criteria** (what must be TRUE):
-  1. User can enable sound-reactive mode using device microphone
-  2. User can adjust sound sensitivity threshold
+  1. User can enable sound-reactive mode using tower's internal microphone
+  2. User can adjust sound sensitivity threshold (0-100)
   3. User can assign custom color palette to sound triggers
-  4. User can trigger their own saved animations from sound (not just presets)
-**Plans**: TBD
+  4. User can select from 8 sound-reactive effects
+**Plans**: 4 plans
+Plans:
+- [ ] 03-01-PLAN.md — Sound mode protocol commands and domain use cases
+- [ ] 03-02-PLAN.md — Palette picker model and UI components
+- [ ] 03-03-PLAN.md — SoundReactiveScreen and ViewModel
+- [ ] 03-04-PLAN.md — Navigation integration with Sound tab
 **UI hint**: yes
 
 ### Phase 4: Multi-Tower Orchestration
@@ -88,6 +93,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. BLE Foundation & Basic Control | 3/3 | Complete | 2026-03-28 |
-| 2. Timeline Animation & Presets | 0/5 | Planned | - |
-| 3. Sound-Reactive Mode | 0/TBD | Not started | - |
+| 2. Timeline Animation & Presets | 5/5 | Complete | 2026-03-29 |
+| 3. Sound-Reactive Mode | 0/4 | Planned | - |
 | 4. Multi-Tower Orchestration | 0/TBD | Not started | - |
