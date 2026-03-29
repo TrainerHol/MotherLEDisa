@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.motherledisa.ui.animation.AnimationEditorScreen
 import com.motherledisa.ui.control.ControlScreen
 import com.motherledisa.ui.device.DeviceListScreen
 
@@ -79,6 +80,16 @@ fun NavGraph(
             composable<Screen.Control> { backStackEntry ->
                 val args = backStackEntry.toRoute<Screen.Control>()
                 ControlScreen(deviceAddress = args.deviceAddress)
+            }
+            composable<Screen.AnimationEditor> {
+                AnimationEditorScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable<Screen.PresetLibrary> {
+                // PresetLibraryScreen will be added in Plan 05
+                // Placeholder for now - redirect to device list
+                DeviceListScreen(navController = navController)
             }
         }
     }

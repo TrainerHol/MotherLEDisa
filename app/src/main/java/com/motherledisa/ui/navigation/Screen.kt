@@ -21,4 +21,20 @@ sealed class Screen {
      */
     @Serializable
     data class Control(val deviceAddress: String? = null) : Screen()
+
+    /**
+     * Animation editor screen for creating keyframe animations.
+     * Per UX-03: Dedicated screen for timeline animation editor.
+     * @param animationId Optional - if null, creates new animation; if set, loads existing
+     */
+    @Serializable
+    data class AnimationEditor(val animationId: Long? = null) : Screen()
+
+    /**
+     * Preset library screen for browsing saved animations.
+     * Per UX-06: Dedicated screen for preset library.
+     * @param selectMode If true, selecting a preset returns it; if false, applies to device
+     */
+    @Serializable
+    data class PresetLibrary(val selectMode: Boolean = false) : Screen()
 }
