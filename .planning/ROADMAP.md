@@ -39,7 +39,7 @@ Plans:
 ### Phase 2: Timeline Animation & Presets
 **Goal**: Users can create custom keyframe animations and save them for reuse
 **Depends on**: Phase 1
-**Requirements**: ANIM-01, ANIM-02, ANIM-03, ANIM-04, ANIM-05, ANIM-06, ANIM-07, ANIM-08, PRESET-01, PRESET-02, PRESET-03, PRESET-04, PRESET-05, UX-03, UX-06
+**Requirements**: ANIM-01, ANIM-02, ANIM-03, ANIM-04, ANIM-05, ANIM-06, ANIM-07, PRESET-01, PRESET-02, PRESET-03, PRESET-04, PRESET-05, UX-03, UX-06
 **Success Criteria** (what must be TRUE):
   1. User can create an animation with multiple keyframes on a timeline
   2. User can set color and position for each keyframe and drag to adjust timing
