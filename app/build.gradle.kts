@@ -7,6 +7,18 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+import java.util.Properties
+
+val versionProps = Properties().apply {
+    val f = rootProject.file("version.properties")
+    if (f.isFile) {
+        f.inputStream().use { load(it) }
+    }
+}
+
+val appVersionCode = versionProps.getProperty("VERSION_CODE")?.toIntOrNull() ?: 1
+val appVersionName = versionProps.getProperty("VERSION_NAME") ?: "1.0.0"
+
 android {
     namespace = "com.motherledisa"
     compileSdk = 35
@@ -15,14 +27,43 @@ android {
         applicationId = "com.motherledisa"
         minSdk = 29
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val releaseKeystorePathEnv = System.getenv("ANDROID_KEYSTORE_PATH")?.takeIf { it.isNotBlank() }
+    val releaseKeystorePasswordEnv = System.getenv("ANDROID_KEYSTORE_PASSWORD")?.takeIf { it.isNotBlank() }
+    val releaseKeyAliasEnv = System.getenv("ANDROID_KEY_ALIAS")?.takeIf { it.isNotBlank() }
+    val releaseKeyPasswordEnv = System.getenv("ANDROID_KEY_PASSWORD")?.takeIf { it.isNotBlank() }
+    val hasReleaseSigning =
+        releaseKeystorePathEnv != null &&
+            releaseKeystorePasswordEnv != null &&
+            releaseKeyAliasEnv != null &&
+            releaseKeyPasswordEnv != null
+
+    if (hasReleaseSigning) {
+        val releaseKeystorePath = requireNotNull(releaseKeystorePathEnv)
+        val releaseKeystorePassword = requireNotNull(releaseKeystorePasswordEnv)
+        val releaseKeyAlias = requireNotNull(releaseKeyAliasEnv)
+        val releaseKeyPassword = requireNotNull(releaseKeyPasswordEnv)
+
+        signingConfigs {
+            create("release") {
+                storeFile = file(releaseKeystorePath)
+                storePassword = releaseKeystorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -92,6 +133,9 @@ dependencies {
 
     // Color Picker
     implementation("com.godaddy.android.colorpicker:compose-color-picker-android:0.7.0")
+
+    // Reorderable (drag-and-drop lists)
+    implementation("sh.calvin.reorderable:reorderable:3.0.0")
 
     // Utilities
     implementation("com.jakewharton.timber:timber:5.0.1")
