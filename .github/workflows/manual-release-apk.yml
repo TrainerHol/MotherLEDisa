@@ -1,0 +1,118 @@
+name: Manual APK Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump type
+        type: choice
+        required: true
+        default: patch
+        options:
+          - patch
+          - minor
+          - major
+      prerelease:
+        description: Create a prerelease tag/release
+        type: boolean
+        required: true
+        default: false
+      draft:
+        description: Create a draft GitHub Release
+        type: boolean
+        required: true
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Bump version.properties
+        id: bump
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(--bump '${{ inputs.bump }}')
+          if [[ '${{ inputs.prerelease }}' == 'true' ]]; then
+            args+=(--prerelease)
+          fi
+          python3 scripts/bump_version.py "${args[@]}"
+
+      - name: Commit version bump
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --porcelain
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add version.properties
+          git commit -m "chore(release): bump version to ${{ steps.bump.outputs.version_name }}"
+          git push
+
+      - name: Tag release
+        shell: bash
+        run: |
+          set -euo pipefail
+          git tag '${{ steps.bump.outputs.tag }}'
+          git push origin '${{ steps.bump.outputs.tag }}'
+
+      - name: Prepare keystore
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        shell: bash
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > release-keystore.jks
+
+      - name: Assemble release APK
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release-keystore.jks
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: ./gradlew :app:assembleRelease
+
+      - name: Prepare release asset
+        id: asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          apk_dir="app/build/outputs/apk/release"
+          if [[ -f "$apk_dir/app-release.apk" ]]; then
+            src="$apk_dir/app-release.apk"
+          elif [[ -f "$apk_dir/app-release-unsigned.apk" ]]; then
+            src="$apk_dir/app-release-unsigned.apk"
+          else
+            src="$(ls -1 "$apk_dir"/*.apk | head -n 1)"
+          fi
+          out="dist/MotherLEDisa-${{ steps.bump.outputs.tag }}.apk"
+          cp "$src" "$out"
+          echo "asset_path=$out" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.bump.outputs.tag }}
+          name: ${{ steps.bump.outputs.tag }}
+          draft: ${{ inputs.draft }}
+          prerelease: ${{ inputs.prerelease }}
+          files: ${{ steps.asset.outputs.asset_path }}
