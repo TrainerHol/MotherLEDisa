@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-03-29T03:33:59.047Z"
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-03-29T04:59:31.189Z"
 last_activity: 2026-03-29
 progress:
   total_phases: 4
-  completed_phases: 0
-  total_plans: 3
-  completed_plans: 2
+  completed_phases: 1
+  total_plans: 8
+  completed_plans: 4
   percent: 0
 ---
 
@@ -21,12 +21,12 @@ progress:
 See: .planning/PROJECT.md (updated 2025-03-25)
 
 **Core value:** Users can create and save their own custom LED animations with frame-by-frame control over color, position, and timing — not just pick from presets.
-**Current focus:** Phase 01 — ble-foundation-basic-control
+**Current focus:** Phase 02 — timeline-animation-presets
 
 ## Current Position
 
-Phase: 01 (ble-foundation-basic-control) — EXECUTING
-Plan: 3 of 3
+Phase: 02 (timeline-animation-presets) — EXECUTING
+Plan: 2 of 5
 Status: Ready to execute
 Last activity: 2026-03-29
 
@@ -54,6 +54,8 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01 P01 | 48min | 3 tasks | 31 files |
 | Phase 01 P02 | 45 | 3 tasks | 12 files |
+| Phase 01 P03 | 47 | 3 tasks | 13 files |
+| Phase 02 P01 | 2min | 3 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -69,6 +71,11 @@ Recent decisions affecting current work:
 - [Phase 01]: Foreground service with IMPORTANCE_LOW for minimal notification per D-14
 - [Phase 01]: Type-safe Compose navigation with @Serializable routes (stable since Nav 2.8.0)
 - [Phase 01]: DeviceViewModel combines 3 flows (scan + known + connected) via combine() operator
+- [Phase 01]: Debounced BLE updates: brightness at 30fps (33ms), color at 50ms to prevent queue flooding
+- [Phase 01]: Device picker uses null address for 'All devices' multi-tower control pattern
+- [Phase 02]: JSON serialization for keyframes via Kotlinx Serialization (simpler than table)
+- [Phase 02]: ProvidedTypeConverter pattern for Hilt DI compatibility with Room
+- [Phase 02]: Room migration v1->v2 instead of destructive migration for production safety
 
 ### Pending Todos
 
@@ -80,6 +87,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-29T03:33:59.044Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-03-29T04:59:31.187Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None

@@ -18,15 +18,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Basic Control
 
-- [ ] **CTRL-01**: User can turn tower on/off with single tap
-- [ ] **CTRL-02**: User can select any RGB color via color wheel
-- [ ] **CTRL-03**: User can adjust brightness via slider with real-time preview
-- [ ] **CTRL-04**: User can select from built-in hardware effects (fade, jump, blink, breathing)
-- [ ] **CTRL-05**: User can adjust effect speed
+- [x] **CTRL-01**: User can turn tower on/off with single tap
+- [x] **CTRL-02**: User can select any RGB color via color wheel
+- [x] **CTRL-03**: User can adjust brightness via slider with real-time preview
+- [x] **CTRL-04**: User can select from built-in hardware effects (fade, jump, blink, breathing)
+- [x] **CTRL-05**: User can adjust effect speed
 
 ### Timeline Animation
 
-- [ ] **ANIM-01**: User can create animation with keyframes on a timeline
+- [x] **ANIM-01**: User can create animation with keyframes on a timeline
 - [ ] **ANIM-02**: User can set color for each keyframe
 - [ ] **ANIM-03**: User can set position/segment for each keyframe (different heights = different colors)
 - [ ] **ANIM-04**: User can drag keyframes to adjust timing
@@ -57,18 +57,18 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **PRESET-02**: User can view list of saved presets
 - [ ] **PRESET-03**: User can apply saved preset to connected tower(s)
 - [ ] **PRESET-04**: User can delete saved presets
-- [ ] **PRESET-05**: Presets persist across app restarts
+- [x] **PRESET-05**: Presets persist across app restarts
 
 ### User Experience
 
 - [x] **UX-01**: App has dedicated screen for device discovery and connection
-- [ ] **UX-02**: App has dedicated screen for basic controls (power, color, brightness)
+- [x] **UX-02**: App has dedicated screen for basic controls (power, color, brightness)
 - [ ] **UX-03**: App has dedicated screen for timeline animation editor
 - [ ] **UX-04**: App has dedicated screen for sound-reactive configuration
 - [ ] **UX-05**: App has dedicated screen for multi-tower orchestration
 - [ ] **UX-06**: App has dedicated screen for preset library
 - [x] **UX-07**: Navigation between screens is intuitive and consistent
-- [ ] **UX-08**: Real-time preview shows current tower state
+- [x] **UX-08**: Real-time preview shows current tower state
 
 ## v2 Requirements
 
@@ -116,19 +116,19 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BLE-04 | Phase 1 | Complete |
 | BLE-05 | Phase 1 | Complete |
 | BLE-06 | Phase 1 | Complete |
-| CTRL-01 | Phase 1 | Pending |
-| CTRL-02 | Phase 1 | Pending |
-| CTRL-03 | Phase 1 | Pending |
-| CTRL-04 | Phase 1 | Pending |
-| CTRL-05 | Phase 1 | Pending |
-| ANIM-01 | Phase 2 | Pending |
+| CTRL-01 | Phase 1 | Complete |
+| CTRL-02 | Phase 1 | Complete |
+| CTRL-03 | Phase 1 | Complete |
+| CTRL-04 | Phase 1 | Complete |
+| CTRL-05 | Phase 1 | Complete |
+| ANIM-01 | Phase 2 | Complete |
 | ANIM-02 | Phase 2 | Pending |
 | ANIM-03 | Phase 2 | Pending |
 | ANIM-04 | Phase 2 | Pending |
 | ANIM-05 | Phase 2 | Pending |
 | ANIM-06 | Phase 2 | Pending |
 | ANIM-07 | Phase 2 | Pending |
-| ANIM-08 | Phase 2 | Pending |
+| ANIM-08 | v2 | Deferred |
 | SOUND-01 | Phase 3 | Pending |
 | SOUND-02 | Phase 3 | Pending |
 | SOUND-03 | Phase 3 | Pending |
@@ -143,15 +143,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRESET-02 | Phase 2 | Pending |
 | PRESET-03 | Phase 2 | Pending |
 | PRESET-04 | Phase 2 | Pending |
-| PRESET-05 | Phase 2 | Pending |
+| PRESET-05 | Phase 2 | Complete |
 | UX-01 | Phase 1 | Complete |
-| UX-02 | Phase 1 | Pending |
+| UX-02 | Phase 1 | Complete |
 | UX-03 | Phase 2 | Pending |
 | UX-04 | Phase 3 | Pending |
 | UX-05 | Phase 4 | Pending |
 | UX-06 | Phase 2 | Pending |
 | UX-07 | Phase 1 | Complete |
-| UX-08 | Phase 1 | Pending |
+| UX-08 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 42 total

@@ -48,7 +48,7 @@ Plans:
   5. User can save animation as preset and recall it later
 **Plans**: 5 plans
 Plans:
-- [ ] 02-01-PLAN.md — Domain models, Room entities, and database migration
+- [x] 02-01-PLAN.md — Domain models, Room entities, and database migration
 - [ ] 02-02-PLAN.md — Animation playback engine with HSV interpolation
 - [ ] 02-03-PLAN.md — Timeline editor UI components (Canvas, keyframes, playhead)
 - [ ] 02-04-PLAN.md — Animation Editor screen with ViewModel assembly
