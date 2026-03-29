@@ -33,7 +33,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ANIM-05**: User can preview animation in app before sending to device
 - [x] **ANIM-06**: User can play animation on connected tower(s)
 - [x] **ANIM-07**: User can pause and stop animation playback
-- [ ] **ANIM-08**: User can create patterns (sine waves, gradients) applied to segments
+- [x] **ANIM-08**: User can create patterns (sine waves, gradients) applied to segments
 
 ### Sound Reactive
 
@@ -54,7 +54,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Preset Library
 
 - [x] **PRESET-01**: User can save current animation as named preset
-- [ ] **PRESET-02**: User can view list of saved presets
+- [x] **PRESET-02**: User can view list of saved presets
 - [x] **PRESET-03**: User can apply saved preset to connected tower(s)
 - [x] **PRESET-04**: User can delete saved presets
 - [x] **PRESET-05**: Presets persist across app restarts
@@ -66,7 +66,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **UX-03**: App has dedicated screen for timeline animation editor
 - [ ] **UX-04**: App has dedicated screen for sound-reactive configuration
 - [ ] **UX-05**: App has dedicated screen for multi-tower orchestration
-- [ ] **UX-06**: App has dedicated screen for preset library
+- [x] **UX-06**: App has dedicated screen for preset library
 - [x] **UX-07**: Navigation between screens is intuitive and consistent
 - [x] **UX-08**: Real-time preview shows current tower state
 
@@ -140,7 +140,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MULTI-05 | Phase 4 | Pending |
 | MULTI-06 | Phase 4 | Pending |
 | PRESET-01 | Phase 2 | Complete |
-| PRESET-02 | Phase 2 | Pending |
+| PRESET-02 | Phase 2 | Complete |
 | PRESET-03 | Phase 2 | Complete |
 | PRESET-04 | Phase 2 | Complete |
 | PRESET-05 | Phase 2 | Complete |
@@ -149,7 +149,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-03 | Phase 2 | Complete |
 | UX-04 | Phase 3 | Pending |
 | UX-05 | Phase 4 | Pending |
-| UX-06 | Phase 2 | Pending |
+| UX-06 | Phase 2 | Complete |
 | UX-07 | Phase 1 | Complete |
 | UX-08 | Phase 1 | Complete |
 
