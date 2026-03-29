@@ -44,10 +44,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Multi-Tower
 
-- [ ] **MULTI-01**: User can control multiple towers simultaneously
-- [ ] **MULTI-02**: User can enable mirror mode (all towers show same animation)
-- [ ] **MULTI-03**: User can enable offset mode (staggered timing across towers)
-- [ ] **MULTI-04**: User can enable cascade mode (when one tower finishes, next starts)
+- [x] **MULTI-01**: User can control multiple towers simultaneously
+- [x] **MULTI-02**: User can enable mirror mode (all towers show same animation)
+- [x] **MULTI-03**: User can enable offset mode (staggered timing across towers)
+- [x] **MULTI-04**: User can enable cascade mode (when one tower finishes, next starts)
 - [x] **MULTI-05**: User can define tower ordering for offset/cascade modes
 - [x] **MULTI-06**: User can enable independent mode (each tower controlled separately)
 
@@ -65,7 +65,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **UX-02**: App has dedicated screen for basic controls (power, color, brightness)
 - [x] **UX-03**: App has dedicated screen for timeline animation editor
 - [x] **UX-04**: App has dedicated screen for sound-reactive configuration
-- [ ] **UX-05**: App has dedicated screen for multi-tower orchestration
+- [x] **UX-05**: App has dedicated screen for multi-tower orchestration
 - [x] **UX-06**: App has dedicated screen for preset library
 - [x] **UX-07**: Navigation between screens is intuitive and consistent
 - [x] **UX-08**: Real-time preview shows current tower state
@@ -133,10 +133,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SOUND-02 | Phase 3 | Complete |
 | SOUND-03 | Phase 3 | Complete |
 | SOUND-04 | Phase 3 | Complete |
-| MULTI-01 | Phase 4 | Pending |
-| MULTI-02 | Phase 4 | Pending |
-| MULTI-03 | Phase 4 | Pending |
-| MULTI-04 | Phase 4 | Pending |
+| MULTI-01 | Phase 4 | Complete |
+| MULTI-02 | Phase 4 | Complete |
+| MULTI-03 | Phase 4 | Complete |
+| MULTI-04 | Phase 4 | Complete |
 | MULTI-05 | Phase 4 | Complete |
 | MULTI-06 | Phase 4 | Complete |
 | PRESET-01 | Phase 2 | Complete |
@@ -148,7 +148,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-02 | Phase 1 | Complete |
 | UX-03 | Phase 2 | Complete |
 | UX-04 | Phase 3 | Complete |
-| UX-05 | Phase 4 | Pending |
+| UX-05 | Phase 4 | Complete |
 | UX-06 | Phase 2 | Complete |
 | UX-07 | Phase 1 | Complete |
 | UX-08 | Phase 1 | Complete |
