@@ -12,7 +12,7 @@ MotherLEDisa delivers custom LED animation control for MELK-OT21 tower lights th
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: BLE Foundation & Basic Control** - Connect to towers and control power, color, brightness
+- [x] **Phase 1: BLE Foundation & Basic Control** - Connect to towers and control power, color, brightness
 - [ ] **Phase 2: Timeline Animation & Presets** - Create keyframe animations and save them as presets
 - [ ] **Phase 3: Sound-Reactive Mode** - Trigger animations from device microphone audio
 - [ ] **Phase 4: Multi-Tower Orchestration** - Coordinate multiple towers with mirror, offset, and cascade modes
@@ -31,9 +31,9 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. User can adjust brightness with a slider and see real-time preview
 **Plans**: 3 plans
 Plans:
-- [ ] 01-PLAN-01.md — Android project foundation with BLE infrastructure and data layer
-- [ ] 01-PLAN-02.md — Device discovery screen with scanning, connection, and navigation
-- [ ] 01-PLAN-03.md — Control screen with power, color, brightness, and effects
+- [x] 01-01-PLAN.md — Android project foundation with BLE infrastructure and data layer
+- [x] 01-02-PLAN.md — Device discovery screen with scanning, connection, and navigation
+- [x] 01-03-PLAN.md — Control screen with power, color, brightness, and effects
 **UI hint**: yes
 
 ### Phase 2: Timeline Animation & Presets
@@ -46,7 +46,13 @@ Plans:
   3. User can preview animation in app before sending to device
   4. User can play, pause, and stop animation on connected tower
   5. User can save animation as preset and recall it later
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 02-01-PLAN.md — Domain models, Room entities, and database migration
+- [ ] 02-02-PLAN.md — Animation playback engine with HSV interpolation
+- [ ] 02-03-PLAN.md — Timeline editor UI components (Canvas, keyframes, playhead)
+- [ ] 02-04-PLAN.md — Animation Editor screen with ViewModel assembly
+- [ ] 02-05-PLAN.md — Preset Library screen with grid and options
 **UI hint**: yes
 
 ### Phase 3: Sound-Reactive Mode
@@ -81,7 +87,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. BLE Foundation & Basic Control | 0/3 | Planned | - |
-| 2. Timeline Animation & Presets | 0/TBD | Not started | - |
+| 1. BLE Foundation & Basic Control | 3/3 | Complete | 2026-03-28 |
+| 2. Timeline Animation & Presets | 0/5 | Planned | - |
 | 3. Sound-Reactive Mode | 0/TBD | Not started | - |
 | 4. Multi-Tower Orchestration | 0/TBD | Not started | - |
