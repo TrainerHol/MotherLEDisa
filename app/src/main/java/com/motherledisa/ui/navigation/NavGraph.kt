@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.GraphicEq
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -24,10 +25,12 @@ import com.motherledisa.ui.animation.AnimationEditorScreen
 import com.motherledisa.ui.control.ControlScreen
 import com.motherledisa.ui.device.DeviceListScreen
 import com.motherledisa.ui.preset.PresetLibraryScreen
+import com.motherledisa.ui.sound.SoundReactiveScreen
 
 /**
  * Main navigation graph with bottom navigation bar.
- * Implements UX-07: Navigation between Device List and Control screens.
+ * Implements UX-07: Navigation between screens.
+ * Tab order: Devices | Control | Sound | Presets (4 tabs per Research recommendation)
  */
 @Composable
 fun NavGraph(
@@ -69,6 +72,20 @@ fun NavGraph(
                     label = { Text("Control") }
                 )
                 NavigationBarItem(
+                    selected = currentDestination?.hasRoute<Screen.SoundReactive>() == true,
+                    onClick = {
+                        navController.navigate(Screen.SoundReactive) {
+                            popUpTo(Screen.DeviceList) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    icon = { Icon(Icons.Default.GraphicEq, contentDescription = "Sound") },
+                    label = { Text("Sound") }
+                )
+                NavigationBarItem(
                     selected = currentDestination?.hasRoute<Screen.PresetLibrary>() == true,
                     onClick = {
                         navController.navigate(Screen.PresetLibrary()) {
@@ -96,6 +113,9 @@ fun NavGraph(
             composable<Screen.Control> { backStackEntry ->
                 val args = backStackEntry.toRoute<Screen.Control>()
                 ControlScreen(deviceAddress = args.deviceAddress)
+            }
+            composable<Screen.SoundReactive> {
+                SoundReactiveScreen()
             }
             composable<Screen.AnimationEditor> {
                 AnimationEditorScreen(
