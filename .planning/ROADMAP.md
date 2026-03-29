@@ -84,8 +84,8 @@ Plans:
   5. User can define tower ordering for choreographed modes
 **Plans**: 4 plans
 Plans:
-- [x] 04-01-PLAN.md — OrchestrationMode enum and OrchestrationManager domain logic
-- [ ] 04-02-PLAN.md — UI components (mode selector, tower list, offset slider, independent config)
+- [ ] 04-01-PLAN.md — OrchestrationMode enum and OrchestrationManager domain logic
+- [x] 04-02-PLAN.md — UI components (mode selector, tower list, offset slider, independent config)
 - [ ] 04-03-PLAN.md — OrchestrateScreen and OrchestrateViewModel
 - [ ] 04-04-PLAN.md — Navigation integration with Orchestrate tab
 **UI hint**: yes
