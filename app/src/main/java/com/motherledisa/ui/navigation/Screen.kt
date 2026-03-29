@@ -23,6 +23,14 @@ sealed class Screen {
     data class Control(val deviceAddress: String? = null) : Screen()
 
     /**
+     * Sound-reactive configuration screen.
+     * Per UX-04: Dedicated screen for sound-reactive configuration.
+     * Configures tower's built-in microphone for autonomous sound response.
+     */
+    @Serializable
+    data object SoundReactive : Screen()
+
+    /**
      * Animation editor screen for creating keyframe animations.
      * Per UX-03: Dedicated screen for timeline animation editor.
      * @param animationId Optional - if null, creates new animation; if set, loads existing
