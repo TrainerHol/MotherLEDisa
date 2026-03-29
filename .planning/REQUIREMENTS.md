@@ -9,12 +9,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### BLE Connection
 
-- [ ] **BLE-01**: User can scan for nearby MELK/ELK/LEDBLE devices
-- [ ] **BLE-02**: User can connect to a discovered device
-- [ ] **BLE-03**: User can disconnect from a connected device
+- [x] **BLE-01**: User can scan for nearby MELK/ELK/LEDBLE devices
+- [x] **BLE-02**: User can connect to a discovered device
+- [x] **BLE-03**: User can disconnect from a connected device
 - [x] **BLE-04**: App auto-reconnects when connection drops unexpectedly
-- [ ] **BLE-05**: User can see list of connected devices
-- [ ] **BLE-06**: User can switch between multiple connected devices
+- [x] **BLE-05**: User can see list of connected devices
+- [x] **BLE-06**: User can switch between multiple connected devices
 
 ### Basic Control
 
@@ -61,13 +61,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### User Experience
 
-- [ ] **UX-01**: App has dedicated screen for device discovery and connection
+- [x] **UX-01**: App has dedicated screen for device discovery and connection
 - [ ] **UX-02**: App has dedicated screen for basic controls (power, color, brightness)
 - [ ] **UX-03**: App has dedicated screen for timeline animation editor
 - [ ] **UX-04**: App has dedicated screen for sound-reactive configuration
 - [ ] **UX-05**: App has dedicated screen for multi-tower orchestration
 - [ ] **UX-06**: App has dedicated screen for preset library
-- [ ] **UX-07**: Navigation between screens is intuitive and consistent
+- [x] **UX-07**: Navigation between screens is intuitive and consistent
 - [ ] **UX-08**: Real-time preview shows current tower state
 
 ## v2 Requirements
@@ -110,12 +110,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BLE-01 | Phase 1 | Pending |
-| BLE-02 | Phase 1 | Pending |
-| BLE-03 | Phase 1 | Pending |
+| BLE-01 | Phase 1 | Complete |
+| BLE-02 | Phase 1 | Complete |
+| BLE-03 | Phase 1 | Complete |
 | BLE-04 | Phase 1 | Complete |
-| BLE-05 | Phase 1 | Pending |
-| BLE-06 | Phase 1 | Pending |
+| BLE-05 | Phase 1 | Complete |
+| BLE-06 | Phase 1 | Complete |
 | CTRL-01 | Phase 1 | Pending |
 | CTRL-02 | Phase 1 | Pending |
 | CTRL-03 | Phase 1 | Pending |
@@ -144,13 +144,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRESET-03 | Phase 2 | Pending |
 | PRESET-04 | Phase 2 | Pending |
 | PRESET-05 | Phase 2 | Pending |
-| UX-01 | Phase 1 | Pending |
+| UX-01 | Phase 1 | Complete |
 | UX-02 | Phase 1 | Pending |
 | UX-03 | Phase 2 | Pending |
 | UX-04 | Phase 3 | Pending |
 | UX-05 | Phase 4 | Pending |
 | UX-06 | Phase 2 | Pending |
-| UX-07 | Phase 1 | Pending |
+| UX-07 | Phase 1 | Complete |
 | UX-08 | Phase 1 | Pending |
 
 **Coverage:**
