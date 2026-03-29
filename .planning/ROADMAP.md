@@ -51,7 +51,7 @@ Plans:
 - [x] 02-01-PLAN.md — Domain models, Room entities, and database migration
 - [x] 02-02-PLAN.md — Animation playback engine with HSV interpolation
 - [x] 02-03-PLAN.md — Timeline editor UI components (Canvas, keyframes, playhead)
-- [ ] 02-04-PLAN.md — Animation Editor screen with ViewModel assembly
+- [x] 02-04-PLAN.md — Animation Editor screen with ViewModel assembly
 - [ ] 02-05-PLAN.md — Preset Library screen with grid and options
 **UI hint**: yes
 

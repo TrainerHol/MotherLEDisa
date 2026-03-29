@@ -27,7 +27,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Timeline Animation
 
 - [x] **ANIM-01**: User can create animation with keyframes on a timeline
-- [ ] **ANIM-02**: User can set color for each keyframe
+- [x] **ANIM-02**: User can set color for each keyframe
 - [ ] **ANIM-03**: User can set position/segment for each keyframe (different heights = different colors)
 - [ ] **ANIM-04**: User can drag keyframes to adjust timing
 - [x] **ANIM-05**: User can preview animation in app before sending to device
@@ -63,7 +63,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **UX-01**: App has dedicated screen for device discovery and connection
 - [x] **UX-02**: App has dedicated screen for basic controls (power, color, brightness)
-- [ ] **UX-03**: App has dedicated screen for timeline animation editor
+- [x] **UX-03**: App has dedicated screen for timeline animation editor
 - [ ] **UX-04**: App has dedicated screen for sound-reactive configuration
 - [ ] **UX-05**: App has dedicated screen for multi-tower orchestration
 - [ ] **UX-06**: App has dedicated screen for preset library
@@ -122,7 +122,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CTRL-04 | Phase 1 | Complete |
 | CTRL-05 | Phase 1 | Complete |
 | ANIM-01 | Phase 2 | Complete |
-| ANIM-02 | Phase 2 | Pending |
+| ANIM-02 | Phase 2 | Complete |
 | ANIM-03 | Phase 2 | Pending |
 | ANIM-04 | Phase 2 | Pending |
 | ANIM-05 | Phase 2 | Complete |
@@ -146,7 +146,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRESET-05 | Phase 2 | Complete |
 | UX-01 | Phase 1 | Complete |
 | UX-02 | Phase 1 | Complete |
-| UX-03 | Phase 2 | Pending |
+| UX-03 | Phase 2 | Complete |
 | UX-04 | Phase 3 | Pending |
 | UX-05 | Phase 4 | Pending |
 | UX-06 | Phase 2 | Pending |
