@@ -37,8 +37,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Sound Reactive
 
-- [ ] **SOUND-01**: User can enable sound-reactive mode using device's internal microphone
-- [ ] **SOUND-02**: User can adjust sound threshold (sensitivity)
+- [x] **SOUND-01**: User can enable sound-reactive mode using device's internal microphone
+- [x] **SOUND-02**: User can adjust sound threshold (sensitivity)
 - [x] **SOUND-03**: User can assign color palette for sound triggers
 - [ ] **SOUND-04**: User can trigger custom animations from sound (not just presets)
 
@@ -129,8 +129,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANIM-06 | Phase 2 | Complete |
 | ANIM-07 | Phase 2 | Complete |
 | ANIM-08 | v2 | Deferred |
-| SOUND-01 | Phase 3 | Pending |
-| SOUND-02 | Phase 3 | Pending |
+| SOUND-01 | Phase 3 | Complete |
+| SOUND-02 | Phase 3 | Complete |
 | SOUND-03 | Phase 3 | Complete |
 | SOUND-04 | Phase 3 | Pending |
 | MULTI-01 | Phase 4 | Pending |
