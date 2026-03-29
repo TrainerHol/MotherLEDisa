@@ -44,10 +44,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Multi-Tower
 
-- [ ] **MULTI-01**: User can control multiple towers simultaneously
-- [ ] **MULTI-02**: User can enable mirror mode (all towers show same animation)
-- [ ] **MULTI-03**: User can enable offset mode (staggered timing across towers)
-- [ ] **MULTI-04**: User can enable cascade mode (when one tower finishes, next starts)
+- [x] **MULTI-01**: User can control multiple towers simultaneously
+- [x] **MULTI-02**: User can enable mirror mode (all towers show same animation)
+- [x] **MULTI-03**: User can enable offset mode (staggered timing across towers)
+- [x] **MULTI-04**: User can enable cascade mode (when one tower finishes, next starts)
 - [ ] **MULTI-05**: User can define tower ordering for offset/cascade modes
 - [ ] **MULTI-06**: User can enable independent mode (each tower controlled separately)
 
@@ -133,10 +133,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SOUND-02 | Phase 3 | Complete |
 | SOUND-03 | Phase 3 | Complete |
 | SOUND-04 | Phase 3 | Complete |
-| MULTI-01 | Phase 4 | Pending |
-| MULTI-02 | Phase 4 | Pending |
-| MULTI-03 | Phase 4 | Pending |
-| MULTI-04 | Phase 4 | Pending |
+| MULTI-01 | Phase 4 | Complete |
+| MULTI-02 | Phase 4 | Complete |
+| MULTI-03 | Phase 4 | Complete |
+| MULTI-04 | Phase 4 | Complete |
 | MULTI-05 | Phase 4 | Pending |
 | MULTI-06 | Phase 4 | Pending |
 | PRESET-01 | Phase 2 | Complete |
