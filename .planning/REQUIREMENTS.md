@@ -30,9 +30,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **ANIM-02**: User can set color for each keyframe
 - [ ] **ANIM-03**: User can set position/segment for each keyframe (different heights = different colors)
 - [ ] **ANIM-04**: User can drag keyframes to adjust timing
-- [ ] **ANIM-05**: User can preview animation in app before sending to device
-- [ ] **ANIM-06**: User can play animation on connected tower(s)
-- [ ] **ANIM-07**: User can pause and stop animation playback
+- [x] **ANIM-05**: User can preview animation in app before sending to device
+- [x] **ANIM-06**: User can play animation on connected tower(s)
+- [x] **ANIM-07**: User can pause and stop animation playback
 - [ ] **ANIM-08**: User can create patterns (sine waves, gradients) applied to segments
 
 ### Sound Reactive
@@ -53,10 +53,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Preset Library
 
-- [ ] **PRESET-01**: User can save current animation as named preset
+- [x] **PRESET-01**: User can save current animation as named preset
 - [ ] **PRESET-02**: User can view list of saved presets
-- [ ] **PRESET-03**: User can apply saved preset to connected tower(s)
-- [ ] **PRESET-04**: User can delete saved presets
+- [x] **PRESET-03**: User can apply saved preset to connected tower(s)
+- [x] **PRESET-04**: User can delete saved presets
 - [x] **PRESET-05**: Presets persist across app restarts
 
 ### User Experience
@@ -125,9 +125,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANIM-02 | Phase 2 | Pending |
 | ANIM-03 | Phase 2 | Pending |
 | ANIM-04 | Phase 2 | Pending |
-| ANIM-05 | Phase 2 | Pending |
-| ANIM-06 | Phase 2 | Pending |
-| ANIM-07 | Phase 2 | Pending |
+| ANIM-05 | Phase 2 | Complete |
+| ANIM-06 | Phase 2 | Complete |
+| ANIM-07 | Phase 2 | Complete |
 | ANIM-08 | v2 | Deferred |
 | SOUND-01 | Phase 3 | Pending |
 | SOUND-02 | Phase 3 | Pending |
@@ -139,10 +139,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MULTI-04 | Phase 4 | Pending |
 | MULTI-05 | Phase 4 | Pending |
 | MULTI-06 | Phase 4 | Pending |
-| PRESET-01 | Phase 2 | Pending |
+| PRESET-01 | Phase 2 | Complete |
 | PRESET-02 | Phase 2 | Pending |
-| PRESET-03 | Phase 2 | Pending |
-| PRESET-04 | Phase 2 | Pending |
+| PRESET-03 | Phase 2 | Complete |
+| PRESET-04 | Phase 2 | Complete |
 | PRESET-05 | Phase 2 | Complete |
 | UX-01 | Phase 1 | Complete |
 | UX-02 | Phase 1 | Complete |
