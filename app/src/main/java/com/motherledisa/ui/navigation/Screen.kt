@@ -23,6 +23,14 @@ sealed class Screen {
     data class Control(val deviceAddress: String? = null) : Screen()
 
     /**
+     * Multi-tower orchestration screen.
+     * Per UX-05: Dedicated screen for multi-tower orchestration.
+     * Per D-09: Dedicated "Orchestrate" tab in bottom navigation.
+     */
+    @Serializable
+    data object Orchestrate : Screen()
+
+    /**
      * Sound-reactive configuration screen.
      * Per UX-04: Dedicated screen for sound-reactive configuration.
      * Configures tower's built-in microphone for autonomous sound response.
