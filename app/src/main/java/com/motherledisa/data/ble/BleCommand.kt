@@ -61,4 +61,48 @@ sealed class BleCommand {
 
         override fun hashCode(): Int = data.contentHashCode()
     }
+
+    /** Enable microphone sound-reactive mode */
+    data class EnableMic(override val data: ByteArray) : BleCommand() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is EnableMic) return false
+            return data.contentEquals(other.data)
+        }
+
+        override fun hashCode(): Int = data.contentHashCode()
+    }
+
+    /** Disable microphone sound-reactive mode */
+    data class DisableMic(override val data: ByteArray) : BleCommand() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is DisableMic) return false
+            return data.contentEquals(other.data)
+        }
+
+        override fun hashCode(): Int = data.contentHashCode()
+    }
+
+    /** Set microphone sound effect (0x80-0x87) */
+    data class SetMicEffect(override val data: ByteArray) : BleCommand() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is SetMicEffect) return false
+            return data.contentEquals(other.data)
+        }
+
+        override fun hashCode(): Int = data.contentHashCode()
+    }
+
+    /** Set microphone sensitivity (0-100) */
+    data class SetMicSensitivity(override val data: ByteArray) : BleCommand() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is SetMicSensitivity) return false
+            return data.contentEquals(other.data)
+        }
+
+        override fun hashCode(): Int = data.contentHashCode()
+    }
 }

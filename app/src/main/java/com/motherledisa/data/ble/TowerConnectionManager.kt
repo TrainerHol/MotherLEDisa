@@ -223,6 +223,102 @@ class TowerConnectionManager @Inject constructor(
             setEffect(tower, effectId, speed)
         }
     }
+
+    // ========== Sound Mode Commands ==========
+
+    /**
+     * Sends a generic command to a tower's BLE queue.
+     * Used by sound mode use cases for mic control commands.
+     *
+     * @param address MAC address of the target tower
+     * @param command Command bytes to send
+     */
+    fun sendCommand(address: String, command: ByteArray) {
+        val tower = _connectedTowers.value.find { it.address == address }
+        if (tower == null) {
+            Timber.w("Cannot send command: tower $address not connected")
+            return
+        }
+        scope.launch {
+            tower.commandQueue.enqueue(BleCommand.SetColor(command)) // Generic command routing
+        }
+    }
+
+    /**
+     * Enables microphone sound-reactive mode on a tower.
+     */
+    fun enableMic(tower: ConnectedTower) {
+        scope.launch {
+            val command = MelkProtocol.enableMic()
+            tower.commandQueue.enqueue(BleCommand.EnableMic(command))
+        }
+    }
+
+    /**
+     * Disables microphone sound-reactive mode on a tower.
+     */
+    fun disableMic(tower: ConnectedTower) {
+        scope.launch {
+            val command = MelkProtocol.disableMic()
+            tower.commandQueue.enqueue(BleCommand.DisableMic(command))
+        }
+    }
+
+    /**
+     * Sets the microphone sound effect on a tower.
+     */
+    fun setMicEffect(tower: ConnectedTower, effectId: Byte) {
+        scope.launch {
+            val command = MelkProtocol.setMicEffect(effectId)
+            tower.commandQueue.enqueue(BleCommand.SetMicEffect(command))
+        }
+    }
+
+    /**
+     * Sets the microphone sensitivity on a tower.
+     */
+    fun setMicSensitivity(tower: ConnectedTower, value: Int) {
+        scope.launch {
+            val command = MelkProtocol.setMicSensitivity(value)
+            tower.commandQueue.enqueue(BleCommand.SetMicSensitivity(command))
+        }
+    }
+
+    /**
+     * Enables microphone on all connected towers.
+     */
+    fun enableMicAll() {
+        _connectedTowers.value.forEach { tower ->
+            enableMic(tower)
+        }
+    }
+
+    /**
+     * Disables microphone on all connected towers.
+     */
+    fun disableMicAll() {
+        _connectedTowers.value.forEach { tower ->
+            disableMic(tower)
+        }
+    }
+
+    /**
+     * Sets microphone effect on all connected towers.
+     */
+    fun setMicEffectAll(effectId: Byte) {
+        _connectedTowers.value.forEach { tower ->
+            setMicEffect(tower, effectId)
+        }
+    }
+
+    /**
+     * Sets microphone sensitivity on all connected towers.
+     */
+    fun setMicSensitivityAll(value: Int) {
+        _connectedTowers.value.forEach { tower ->
+            setMicSensitivity(tower, value)
+        }
+    }
 }
 
 /**
