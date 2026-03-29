@@ -158,4 +158,57 @@ object MelkProtocol {
      * Uses same format as setEffect.
      */
     fun setEffectSpeed(effectId: Byte, speed: Int): ByteArray = setEffect(effectId, speed)
+
+    // ========== Sound Mode Commands ==========
+
+    /**
+     * Enable tower's built-in microphone for sound-reactive mode.
+     * Per D-01: Tower handles audio detection in hardware - app does NOT capture audio.
+     * Command: 0x7e 0x04 0x07 0x01 0xff 0xff 0xff 0x00 0xef
+     */
+    fun enableMic(): ByteArray = byteArrayOf(
+        START_BYTE,
+        0x04, 0x07, 0x01,
+        0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0x00,
+        END_BYTE
+    )
+
+    /**
+     * Disable tower's built-in microphone.
+     * Command: 0x7e 0x04 0x07 0x00 0xff 0xff 0xff 0x00 0xef
+     */
+    fun disableMic(): ByteArray = byteArrayOf(
+        START_BYTE,
+        0x04, 0x07, 0x00,
+        0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0x00,
+        END_BYTE
+    )
+
+    /**
+     * Set sound-reactive effect (0x80-0x87).
+     * Command format: 0x7e 0x05 0x03 EFFECT_ID 0x04 0xff 0xff 0x00 0xef
+     *
+     * @param effectId Effect ID byte (0x80-0x87) from SoundEffect enum
+     */
+    fun setMicEffect(effectId: Byte): ByteArray = byteArrayOf(
+        START_BYTE,
+        0x05, 0x03, effectId, 0x04,
+        0xFF.toByte(), 0xFF.toByte(), 0x00,
+        END_BYTE
+    )
+
+    /**
+     * Set microphone sensitivity level.
+     * Per D-07: Expose sensitivity control as 0-100 slider.
+     * Command format: 0x7e 0x04 0x06 VALUE 0xff 0xff 0xff 0x00 0xef
+     *
+     * @param value Sensitivity level 0-100 (0=low, 100=high)
+     */
+    fun setMicSensitivity(value: Int): ByteArray = byteArrayOf(
+        START_BYTE,
+        0x04, 0x06,
+        value.coerceIn(0, 100).toByte(),
+        0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0x00,
+        END_BYTE
+    )
 }
