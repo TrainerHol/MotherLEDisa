@@ -144,6 +144,18 @@
     colorHex.value = hex;
   }
 
+  // Quick color swatches
+  document.querySelectorAll('.qcolor').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.qcolor').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const rgb = Animation.hexToRgb(btn.dataset.c);
+      currentColor = rgb;
+      updateColorUI();
+      BLE.setColor(document.getElementById('control-target').value, rgb.r, rgb.g, rgb.b);
+    });
+  });
+
   // Power
   document.getElementById('btn-power-on').onclick = () => BLE.powerOn(document.getElementById('control-target').value);
   document.getElementById('btn-power-off').onclick = () => BLE.powerOff(document.getElementById('control-target').value);
