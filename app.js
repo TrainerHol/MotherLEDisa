@@ -233,6 +233,112 @@
     }
   });
 
+  // --- Sound source tab switching ---
+  document.querySelectorAll('.sound-src-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.sound-src-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.sound-section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`sound-${tab.dataset.src}`).classList.add('active');
+    });
+  });
+
+  // ======================
+  // CUSTOM SOUND REACTIVE
+  // ======================
+  let customSoundActive = false;
+  let selectedCustomMode = 'frequency';
+  const customToggle = document.getElementById('custom-sound-toggle');
+  const customStatus = document.getElementById('custom-sound-status');
+  const customStatusLabel = customStatus.querySelector('.sound-status-label');
+
+  // Build mode buttons
+  const customModeGrid = document.getElementById('custom-mode-grid');
+  AudioReactive.MODES.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'sound-effect-btn' + (m.id === selectedCustomMode ? ' active' : '');
+    btn.innerHTML = `<strong>${m.name}</strong><br><span style="font-size:0.65rem;color:var(--text-muted)">${m.desc}</span>`;
+    btn.onclick = () => {
+      customModeGrid.querySelectorAll('.sound-effect-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedCustomMode = m.id;
+      if (customSoundActive) AudioReactive.setConfig({ mode: m.id });
+    };
+    customModeGrid.appendChild(btn);
+  });
+
+  // Custom toggle
+  customToggle.addEventListener('click', async () => {
+    if (!customSoundActive) {
+      try {
+        const c1 = Animation.hexToRgb(document.getElementById('custom-color1').value);
+        const c2 = Animation.hexToRgb(document.getElementById('custom-color2').value);
+        await AudioReactive.start({
+          mode: selectedCustomMode,
+          color1: c1, color2: c2,
+          sensitivity: +document.getElementById('custom-sensitivity').value,
+          sendRate: +document.getElementById('custom-rate').value,
+        });
+
+        // Visualizer
+        const vizCanvas = document.getElementById('audio-viz');
+        const vizCtx = vizCanvas.getContext('2d');
+        AudioReactive.onFrame(({ color, freqData }) => {
+          vizCtx.fillStyle = '#111';
+          vizCtx.fillRect(0, 0, vizCanvas.width, vizCanvas.height);
+          const barW = vizCanvas.width / freqData.length;
+          const hex = `rgb(${color.r},${color.g},${color.b})`;
+          for (let i = 0; i < freqData.length; i++) {
+            const h = (freqData[i] / 255) * vizCanvas.height;
+            vizCtx.fillStyle = hex;
+            vizCtx.fillRect(i * barW, vizCanvas.height - h, barW - 1, h);
+          }
+        });
+
+        customSoundActive = true;
+        customStatus.classList.add('on');
+        customStatus.classList.remove('off');
+        customStatusLabel.textContent = 'Custom Sound: ON';
+        customToggle.textContent = 'Stop';
+        customToggle.className = 'btn btn-danger btn-wide';
+      } catch (e) {
+        alert('Audio error: ' + e.message);
+      }
+    } else {
+      AudioReactive.stop();
+      customSoundActive = false;
+      customStatus.classList.remove('on');
+      customStatus.classList.add('off');
+      customStatusLabel.textContent = 'Custom Sound: OFF';
+      customToggle.textContent = 'Start';
+      customToggle.className = 'btn btn-success btn-wide';
+    }
+  });
+
+  // Custom sensitivity
+  const customSens = document.getElementById('custom-sensitivity');
+  const customSensVal = document.getElementById('custom-sensitivity-value');
+  customSens.addEventListener('input', () => {
+    customSensVal.textContent = customSens.value + 'x';
+    if (customSoundActive) AudioReactive.setConfig({ sensitivity: +customSens.value });
+  });
+
+  // Custom send rate
+  const customRate = document.getElementById('custom-rate');
+  const customRateVal = document.getElementById('custom-rate-value');
+  customRate.addEventListener('input', () => {
+    customRateVal.textContent = customRate.value + 'ms';
+    if (customSoundActive) AudioReactive.setConfig({ sendRate: +customRate.value });
+  });
+
+  // Custom colors
+  document.getElementById('custom-color1').addEventListener('input', (e) => {
+    if (customSoundActive) AudioReactive.setConfig({ color1: Animation.hexToRgb(e.target.value) });
+  });
+  document.getElementById('custom-color2').addEventListener('input', (e) => {
+    if (customSoundActive) AudioReactive.setConfig({ color2: Animation.hexToRgb(e.target.value) });
+  });
+
   // ======================
   // ANIMATION TAB
   // ======================

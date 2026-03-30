@@ -564,6 +564,58 @@ header h1 {
 
 .preset-actions { display: flex; gap: 0.3rem; }
 
+/* Sound source tabs */
+.sound-source-tabs {
+  display: flex;
+  gap: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.sound-src-tab {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface-2);
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.sound-src-tab:not(:last-child) { border-right: 1px solid var(--border); }
+.sound-src-tab:hover { color: var(--text); }
+.sound-src-tab.active { background: var(--primary); color: #000; }
+
+.sound-section { display: none; }
+.sound-section.active { display: block; }
+
+.color-pair-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.color-pair-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.color-pair-label .input-color { width: 40px; height: 32px; }
+
+#audio-viz {
+  width: 100%;
+  height: 80px;
+  border-radius: var(--radius);
+  background: #111;
+  display: block;
+}
+
 /* Responsive */
 @media (max-width: 700px) {
   .panel-row { grid-template-columns: 1fr; }

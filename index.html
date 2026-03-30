@@ -85,34 +85,98 @@
       <section id="tab-sound" class="tab-content">
         <div class="panel">
           <h2>Sound Reactive Mode</h2>
-          <p class="hint">Uses the tower's built-in microphone. Audio is processed on-device — no phone mic needed.</p>
           <select id="sound-target" class="select-target">
             <option value="all">All Devices</option>
           </select>
         </div>
 
+        <!-- Source selector -->
         <div class="panel">
-          <div class="sound-toggle-row">
-            <div id="sound-status" class="sound-status off">
-              <span class="sound-status-dot"></span>
-              <span class="sound-status-label">Sound Mode: OFF</span>
-            </div>
-            <button id="sound-toggle" class="btn btn-success btn-wide">Enable Sound Mode</button>
+          <div class="sound-source-tabs">
+            <button class="sound-src-tab active" data-src="builtin">Tower Mic (Built-in)</button>
+            <button class="sound-src-tab" data-src="custom">Custom (System Audio)</button>
           </div>
         </div>
 
-        <div class="panel">
-          <h2>Sound Effect</h2>
-          <div class="sound-effect-grid" id="sound-effect-grid"></div>
+        <!-- Built-in mic section -->
+        <div id="sound-builtin" class="sound-section active">
+          <div class="panel">
+            <p class="hint">Uses the tower's built-in microphone. Audio is processed on-device.</p>
+            <div class="sound-toggle-row">
+              <div id="sound-status" class="sound-status off">
+                <span class="sound-status-dot"></span>
+                <span class="sound-status-label">Sound Mode: OFF</span>
+              </div>
+              <button id="sound-toggle" class="btn btn-success btn-wide">Enable Sound Mode</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Sound Effect</h2>
+            <div class="sound-effect-grid" id="sound-effect-grid"></div>
+          </div>
+
+          <div class="panel">
+            <h2>Sensitivity</h2>
+            <div class="slider-row">
+              <span class="slider-label-left">Low</span>
+              <input type="range" id="mic-sensitivity" min="0" max="100" value="70" class="slider slider-accent">
+              <span class="slider-label-right">High</span>
+              <span id="mic-sensitivity-value" class="slider-val">70</span>
+            </div>
+          </div>
         </div>
 
-        <div class="panel">
-          <h2>Sensitivity</h2>
-          <div class="slider-row">
-            <span class="slider-label-left">Low</span>
-            <input type="range" id="mic-sensitivity" min="0" max="100" value="70" class="slider slider-accent">
-            <span class="slider-label-right">High</span>
-            <span id="mic-sensitivity-value" class="slider-val">70</span>
+        <!-- Custom audio reactive section -->
+        <div id="sound-custom" class="sound-section">
+          <div class="panel">
+            <p class="hint">Captures system audio or mic on this computer. Sends custom colors to the tower based on audio analysis. Pick your own colors and visualization mode.</p>
+            <div class="sound-toggle-row">
+              <div id="custom-sound-status" class="sound-status off">
+                <span class="sound-status-dot"></span>
+                <span class="sound-status-label">Custom Sound: OFF</span>
+              </div>
+              <button id="custom-sound-toggle" class="btn btn-success btn-wide">Start</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Visualization Mode</h2>
+            <div class="sound-effect-grid" id="custom-mode-grid"></div>
+          </div>
+
+          <div class="panel">
+            <h2>Colors</h2>
+            <div class="color-pair-row">
+              <label class="color-pair-label">
+                Color 1 <input type="color" id="custom-color1" value="#ff0000" class="input-color">
+              </label>
+              <label class="color-pair-label">
+                Color 2 <input type="color" id="custom-color2" value="#0000ff" class="input-color">
+              </label>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Sensitivity</h2>
+            <div class="slider-row">
+              <span class="slider-label-left">Low</span>
+              <input type="range" id="custom-sensitivity" min="0.1" max="4" value="1.5" step="0.1" class="slider slider-accent">
+              <span class="slider-label-right">High</span>
+              <span id="custom-sensitivity-value" class="slider-val">1.5x</span>
+            </div>
+            <h2 style="margin-top:0.75rem">Send Rate</h2>
+            <div class="slider-row">
+              <span class="slider-label-left">Slow</span>
+              <input type="range" id="custom-rate" min="20" max="100" value="30" step="5" class="slider">
+              <span class="slider-label-right">Fast</span>
+              <span id="custom-rate-value" class="slider-val">30ms</span>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Audio Visualizer</h2>
+            <canvas id="audio-viz" width="400" height="80"></canvas>
           </div>
         </div>
       </section>
@@ -195,6 +259,7 @@
 
   <script src="ble.js"></script>
   <script src="animation.js"></script>
+  <script src="audio-reactive.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
