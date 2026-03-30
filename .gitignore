@@ -1,37 +1,15 @@
-# Gradle files
-.gradle/
-build/
-
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Log/OS Files
+# OS files
+.DS_Store
 *.log
 
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.apk
-output.json
-
-# IntelliJ
-*.iml
+# Editor
 .idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
+.vscode/
+*.swp
 
-# Keystore files
-*.jks
-*.keystore
+# Node (dev server only)
+node_modules/
 
-# Local secrets (never commit)
-.secrets/
-
-# Google Services (e.g. APIs or Firebase)
-google-services.json
-
-# Android Profiling
-*.hprof
+# Claude Code
 /.claude
+/.planning
