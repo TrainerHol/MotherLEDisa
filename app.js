@@ -982,6 +982,113 @@
 
   document.getElementById('dev-clear-log').onclick = () => devLog.innerHTML = '';
 
+  // Auto experiment runner
+  let autoRunning = false;
+  const autoRunBtn = document.getElementById('dev-auto-run');
+  const autoStopBtn = document.getElementById('dev-auto-stop');
+  const autoStatus = document.getElementById('dev-auto-status');
+  const autoFill = document.getElementById('dev-auto-fill');
+
+  const EXPERIMENTS = [
+    { name: 'Power ON', fn: () => BLE.powerOn('all') },
+    { name: 'Set Red', fn: () => BLE.setColor('all', 255, 0, 0) },
+    { name: 'Set Green', fn: () => BLE.setColor('all', 0, 255, 0) },
+    { name: 'Set Blue', fn: () => BLE.setColor('all', 0, 0, 255) },
+    { name: 'Brightness 50%', fn: () => BLE.setBrightness('all', 50) },
+    { name: 'Brightness 100%', fn: () => BLE.setBrightness('all', 100) },
+    { name: 'Effect: Crossfade Rainbow', fn: () => BLE.setEffect('all', 0x8A, 50) },
+    { name: 'Speed 20', fn: () => BLE.setSpeed('all', 20) },
+    { name: 'Speed 80', fn: () => BLE.setSpeed('all', 80) },
+    { name: 'Static Color (clear effect)', fn: () => BLE.setColor('all', 255, 0, 0) },
+    // Mic experiments
+    { name: 'Enable Mic', fn: () => BLE.enableMic('all') },
+    { name: 'Mic Effect: Energetic (0x80)', fn: () => BLE.setMicEffect('all', 0x80) },
+    { name: 'Mic Sensitivity 70', fn: () => BLE.setMicSensitivity('all', 70) },
+    { name: 'OBSERVE: Is lamp reacting to sound?', fn: () => {} },
+    { name: 'Mic + Color overlay (red)', fn: () => BLE.setColor('all', 255, 0, 0) },
+    { name: 'OBSERVE: Did color change mic effect?', fn: () => {} },
+    { name: 'Mic Effect: Spectrum (0x82)', fn: () => BLE.setMicEffect('all', 0x82) },
+    { name: 'Mic + HW Effect (Crossfade)', fn: () => BLE.setEffect('all', 0x8A, 50) },
+    { name: 'OBSERVE: Did HW effect override mic?', fn: () => {} },
+    { name: 'Disable Mic', fn: () => BLE.disableMic('all') },
+    // Color then mic
+    { name: 'Set Purple', fn: () => BLE.setColor('all', 128, 0, 255) },
+    { name: 'Enable Mic after color', fn: () => BLE.enableMic('all') },
+    { name: 'Mic Effect: Rainbow (0x86)', fn: () => BLE.setMicEffect('all', 0x86) },
+    { name: 'OBSERVE: Does mic use purple as base?', fn: () => {} },
+    { name: 'Disable Mic', fn: () => BLE.disableMic('all') },
+    // Symphony (MELK-OA21)
+    { name: 'Symphony point 100', fn: () => BLE.testSymphony('all', 100) },
+    { name: 'Symphony point 500', fn: () => BLE.testSymphony('all', 500) },
+    { name: 'Symphony point 900', fn: () => BLE.testSymphony('all', 900) },
+    { name: 'OBSERVE: Any change from Symphony?', fn: () => {} },
+    // Scene (MELK-OA21)
+    { name: 'Scene: Disco (5)', fn: () => BLE.testScene('all', 5) },
+    { name: 'OBSERVE: Did scene activate?', fn: () => {} },
+    { name: 'Scene: Fire (11)', fn: () => BLE.testScene('all', 11) },
+    { name: 'OBSERVE: Did fire scene work?', fn: () => {} },
+    // Undocumented commands
+    { name: 'Cmd 0x0D param=50', fn: () => BLE.testStreamCmd('all', 0x0D, 50) },
+    { name: 'OBSERVE: Any reaction to 0x0D?', fn: () => {} },
+    { name: 'Cmd 0x0E param=1', fn: () => BLE.testStreamCmd('all', 0x0E, 1) },
+    { name: 'OBSERVE: Any reaction to 0x0E?', fn: () => {} },
+    { name: 'Cmd 0x0F param=50', fn: () => BLE.testStreamCmd('all', 0x0F, 50) },
+    { name: 'OBSERVE: Any reaction to 0x0F?', fn: () => {} },
+    // Mic + Symphony combo
+    { name: 'Enable Mic', fn: () => BLE.enableMic('all') },
+    { name: 'Mic Effect: Energetic', fn: () => BLE.setMicEffect('all', 0x80) },
+    { name: 'Symphony 200 during mic', fn: () => BLE.testSymphony('all', 200) },
+    { name: 'OBSERVE: Did symphony change mic behavior?', fn: () => {} },
+    { name: 'Symphony 800 during mic', fn: () => BLE.testSymphony('all', 800) },
+    { name: 'OBSERVE: Any difference at 800?', fn: () => {} },
+    { name: 'Disable Mic', fn: () => BLE.disableMic('all') },
+    // Cleanup
+    { name: 'Set White', fn: () => BLE.setColor('all', 255, 255, 255) },
+    { name: 'DONE — check log for observations', fn: () => {} },
+  ];
+
+  autoRunBtn.addEventListener('click', async () => {
+    if (BLE.getConnected().length === 0) {
+      alert('Connect a device first.');
+      return;
+    }
+    autoRunning = true;
+    autoRunBtn.disabled = true;
+    autoStopBtn.disabled = false;
+    dlog('=== AUTO EXPERIMENT STARTED ===', 'log-info');
+
+    for (let i = 0; i < EXPERIMENTS.length; i++) {
+      if (!autoRunning) break;
+      const exp = EXPERIMENTS[i];
+      const pct = ((i + 1) / EXPERIMENTS.length * 100).toFixed(0);
+      autoFill.style.width = pct + '%';
+      autoStatus.textContent = `${i + 1}/${EXPERIMENTS.length}: ${exp.name}`;
+
+      dlog(`[${i + 1}/${EXPERIMENTS.length}] ${exp.name}`);
+      try {
+        await exp.fn();
+      } catch (e) {
+        dlog(`ERROR: ${e.message}`, 'log-err');
+      }
+      // Wait between experiments for observation
+      const isObserve = exp.name.startsWith('OBSERVE');
+      await new Promise(r => setTimeout(r, isObserve ? 3000 : 1000));
+    }
+
+    autoRunning = false;
+    autoRunBtn.disabled = false;
+    autoStopBtn.disabled = true;
+    autoStatus.textContent = 'Complete';
+    dlog('=== AUTO EXPERIMENT COMPLETE ===', 'log-info');
+  });
+
+  autoStopBtn.addEventListener('click', () => {
+    autoRunning = false;
+    autoStopBtn.disabled = true;
+    autoStatus.textContent = 'Stopped';
+    dlog('=== EXPERIMENT STOPPED BY USER ===', 'log-err');
+  });
+
   // --- Init ---
   updateColorUI();
   initTimeline();

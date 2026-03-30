@@ -394,6 +394,17 @@
         </div>
 
         <div class="panel">
+          <h2>Auto Experiment Runner</h2>
+          <p class="hint">Systematically tests protocol commands and logs results. Connect a lamp first, then click Run.</p>
+          <div class="dev-row">
+            <button id="dev-auto-run" class="btn btn-primary">Run All Experiments</button>
+            <button id="dev-auto-stop" class="btn btn-danger btn-small" disabled>Stop</button>
+            <span id="dev-auto-status" class="dev-auto-status"></span>
+          </div>
+          <div id="dev-auto-progress" class="dev-progress-bar"><div id="dev-auto-fill" class="dev-progress-fill"></div></div>
+        </div>
+
+        <div class="panel">
           <h2>Command Log</h2>
           <div id="dev-log" class="dev-log"></div>
           <button id="dev-clear-log" class="btn btn-small" style="margin-top:0.5rem">Clear</button>
