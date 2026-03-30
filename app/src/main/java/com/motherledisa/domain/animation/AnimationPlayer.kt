@@ -13,6 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -131,7 +132,7 @@ class AnimationPlayer @Inject constructor(
     private suspend fun runPlaybackLoop(animation: Animation, startTime: Long = 0L) {
         var currentTime = startTime
 
-        while (isActive && _playbackState.value == PlaybackState.PLAYING) {
+        while (currentCoroutineContext().isActive && _playbackState.value == PlaybackState.PLAYING) {
             // Evaluate frame
             val frame = evaluator.evaluateAt(animation, currentTime)
             _currentFrame.value = frame

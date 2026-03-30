@@ -8,8 +8,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import no.nordicsemi.android.ble.BleManager
-import no.nordicsemi.android.ble.WriteRequest
 import timber.log.Timber
 
 /**
@@ -25,7 +23,7 @@ import timber.log.Timber
  * Reference: RESEARCH.md Pattern 1 - BLE Command Queue
  */
 class TowerCommandQueue(
-    private val bleManager: BleManager,
+    private val bleManager: TowerBleManager,
     private val characteristic: BluetoothGattCharacteristic
 ) {
     private val commandChannel = Channel<BleCommand>(Channel.UNLIMITED)
@@ -73,11 +71,11 @@ class TowerCommandQueue(
      */
     private suspend fun executeCommand(command: BleCommand) {
         try {
-            bleManager.writeCharacteristic(
+            bleManager.writeToCharacteristic(
                 characteristic,
                 command.data,
                 BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
-            ).enqueue()
+            )
 
             Timber.v("Executed BLE command: ${command.javaClass.simpleName} (${command.data.size} bytes)")
         } catch (e: Exception) {
@@ -92,11 +90,11 @@ class TowerCommandQueue(
      */
     suspend fun writeRaw(data: ByteArray) {
         try {
-            bleManager.writeCharacteristic(
+            bleManager.writeToCharacteristic(
                 characteristic,
                 data,
                 BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT // WITH_RESPONSE for init
-            ).enqueue()
+            )
 
             Timber.d("Raw write: ${data.size} bytes")
         } catch (e: Exception) {

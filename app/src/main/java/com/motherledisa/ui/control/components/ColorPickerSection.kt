@@ -24,8 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.godaddy.android.colorpicker.HarmonyColorPicker
+import com.godaddy.android.colorpicker.HsvColor
 import com.godaddy.android.colorpicker.harmony.ColorHarmonyMode
+import com.godaddy.android.colorpicker.harmony.HarmonyColorPicker
 import com.motherledisa.ui.theme.PrimaryAccent
 
 /**
@@ -84,8 +85,8 @@ fun ColorPickerSection(
             modifier = Modifier
                 .size(280.dp)
                 .align(Alignment.CenterHorizontally),
-            onColorChanged = { envelope ->
-                onColorSelected(envelope.color)  // Continuous updates
+            onColorChanged = { hsvColor: HsvColor ->
+                onColorSelected(hsvColor.toColor())  // Continuous updates
             }
         )
 

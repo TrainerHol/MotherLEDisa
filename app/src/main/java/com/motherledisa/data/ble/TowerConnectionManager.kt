@@ -1,14 +1,12 @@
 package com.motherledisa.data.ble
 
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
-import android.bluetooth.BluetoothGattService
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -324,7 +322,7 @@ class TowerConnectionManager @Inject constructor(
 /**
  * Nordic BLE Manager implementation for a single tower device.
  */
-class TowerBleManager(context: Context) : BleManager(context) {
+class TowerBleManager(private val appContext: Context) : BleManager(appContext) {
 
     var writeCharacteristic: BluetoothGattCharacteristic? = null
         private set
@@ -357,9 +355,23 @@ class TowerBleManager(context: Context) : BleManager(context) {
         Timber.d("Services invalidated")
     }
 
+    /**
+     * Public wrapper around the protected writeCharacteristic method.
+     * Needed because TowerCommandQueue calls this from outside the BleManager hierarchy.
+     */
+    fun writeToCharacteristic(
+        characteristic: BluetoothGattCharacteristic,
+        data: ByteArray,
+        writeType: Int
+    ) {
+        writeCharacteristic(characteristic, data, writeType).enqueue()
+    }
+
     fun connect(address: String): no.nordicsemi.android.ble.ConnectRequest {
-        val device = bluetoothAdapter?.getRemoteDevice(address)
+        val bluetoothManager = appContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val adapter = bluetoothManager.adapter
             ?: throw IllegalStateException("Bluetooth adapter not available")
+        val device = adapter.getRemoteDevice(address)
         return connect(device)
             .retry(3, 100)
             .useAutoConnect(true) // D-13: Persistent auto-reconnect

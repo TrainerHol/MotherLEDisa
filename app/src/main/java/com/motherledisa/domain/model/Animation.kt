@@ -42,9 +42,9 @@ fun Animation.extractPalette(maxColors: Int = 5): SoundPalette {
         .map { Color(it.color) }
         .distinctBy { color ->
             // Group similar colors by hue bucket (within ~15 degrees)
-            val hsl = floatArrayOf(0f, 0f, 0f)
-            android.graphics.Color.colorToHSL(color.toArgb(), hsl)
-            (hsl[0] / 15).toInt()  // Bucket by hue
+            val hsv = floatArrayOf(0f, 0f, 0f)
+            android.graphics.Color.colorToHSV(color.toArgb(), hsv)
+            (hsv[0] / 15).toInt()  // Bucket by hue
         }
         .take(maxColors)
 

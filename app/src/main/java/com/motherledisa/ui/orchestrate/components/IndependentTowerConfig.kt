@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,7 @@ import com.motherledisa.domain.model.Animation
  * Per D-05: Dropdown per tower to select animation/preset. Compact, fits DevicePicker pattern.
  * Per MULTI-06: Each tower controlled separately.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IndependentTowerConfig(
     tower: ConnectedTower,

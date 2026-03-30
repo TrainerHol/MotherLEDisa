@@ -38,8 +38,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.godaddy.android.colorpicker.HarmonyColorPicker
+import com.godaddy.android.colorpicker.HsvColor
 import com.godaddy.android.colorpicker.harmony.ColorHarmonyMode
+import com.godaddy.android.colorpicker.harmony.HarmonyColorPicker
 import com.motherledisa.domain.model.InterpolationMode
 import com.motherledisa.domain.model.Keyframe
 import com.motherledisa.ui.theme.PrimaryAccent
@@ -108,9 +109,9 @@ fun KeyframeEditor(
                     modifier = Modifier
                         .size(200.dp)
                         .align(Alignment.CenterHorizontally),
-                    color = color,
-                    onColorChanged = { envelope ->
-                        color = envelope.color
+                    color = HsvColor.from(color),
+                    onColorChanged = { hsvColor ->
+                        color = hsvColor.toColor()
                     }
                 )
 
