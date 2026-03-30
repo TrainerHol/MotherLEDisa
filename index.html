@@ -23,6 +23,7 @@
       <button class="tab" data-tab="sound">Sound</button>
       <button class="tab" data-tab="animation">Animation</button>
       <button class="tab" data-tab="presets">Presets</button>
+      <button class="tab" data-tab="dev">Dev</button>
     </nav>
 
     <main>
@@ -85,34 +86,98 @@
       <section id="tab-sound" class="tab-content">
         <div class="panel">
           <h2>Sound Reactive Mode</h2>
-          <p class="hint">Uses the tower's built-in microphone. Audio is processed on-device — no phone mic needed.</p>
           <select id="sound-target" class="select-target">
             <option value="all">All Devices</option>
           </select>
         </div>
 
+        <!-- Source selector -->
         <div class="panel">
-          <div class="sound-toggle-row">
-            <div id="sound-status" class="sound-status off">
-              <span class="sound-status-dot"></span>
-              <span class="sound-status-label">Sound Mode: OFF</span>
-            </div>
-            <button id="sound-toggle" class="btn btn-success btn-wide">Enable Sound Mode</button>
+          <div class="sound-source-tabs">
+            <button class="sound-src-tab active" data-src="builtin">Tower Mic (Built-in)</button>
+            <button class="sound-src-tab" data-src="custom">Custom (System Audio)</button>
           </div>
         </div>
 
-        <div class="panel">
-          <h2>Sound Effect</h2>
-          <div class="sound-effect-grid" id="sound-effect-grid"></div>
+        <!-- Built-in mic section -->
+        <div id="sound-builtin" class="sound-section active">
+          <div class="panel">
+            <p class="hint">Uses the tower's built-in microphone. Audio is processed on-device.</p>
+            <div class="sound-toggle-row">
+              <div id="sound-status" class="sound-status off">
+                <span class="sound-status-dot"></span>
+                <span class="sound-status-label">Sound Mode: OFF</span>
+              </div>
+              <button id="sound-toggle" class="btn btn-success btn-wide">Enable Sound Mode</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Sound Effect</h2>
+            <div class="sound-effect-grid" id="sound-effect-grid"></div>
+          </div>
+
+          <div class="panel">
+            <h2>Sensitivity</h2>
+            <div class="slider-row">
+              <span class="slider-label-left">Low</span>
+              <input type="range" id="mic-sensitivity" min="0" max="100" value="70" class="slider slider-accent">
+              <span class="slider-label-right">High</span>
+              <span id="mic-sensitivity-value" class="slider-val">70</span>
+            </div>
+          </div>
         </div>
 
-        <div class="panel">
-          <h2>Sensitivity</h2>
-          <div class="slider-row">
-            <span class="slider-label-left">Low</span>
-            <input type="range" id="mic-sensitivity" min="0" max="100" value="70" class="slider slider-accent">
-            <span class="slider-label-right">High</span>
-            <span id="mic-sensitivity-value" class="slider-val">70</span>
+        <!-- Custom audio reactive section -->
+        <div id="sound-custom" class="sound-section">
+          <div class="panel">
+            <p class="hint">Captures system audio or mic on this computer. Sends custom colors to the tower based on audio analysis. Pick your own colors and visualization mode.</p>
+            <div class="sound-toggle-row">
+              <div id="custom-sound-status" class="sound-status off">
+                <span class="sound-status-dot"></span>
+                <span class="sound-status-label">Custom Sound: OFF</span>
+              </div>
+              <button id="custom-sound-toggle" class="btn btn-success btn-wide">Start</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Visualization Mode</h2>
+            <div class="sound-effect-grid" id="custom-mode-grid"></div>
+          </div>
+
+          <div class="panel">
+            <h2>Colors</h2>
+            <div class="color-pair-row">
+              <label class="color-pair-label">
+                Color 1 <input type="color" id="custom-color1" value="#ff0000" class="input-color">
+              </label>
+              <label class="color-pair-label">
+                Color 2 <input type="color" id="custom-color2" value="#0000ff" class="input-color">
+              </label>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Sensitivity</h2>
+            <div class="slider-row">
+              <span class="slider-label-left">Low</span>
+              <input type="range" id="custom-sensitivity" min="0.1" max="4" value="1.5" step="0.1" class="slider slider-accent">
+              <span class="slider-label-right">High</span>
+              <span id="custom-sensitivity-value" class="slider-val">1.5x</span>
+            </div>
+            <h2 style="margin-top:0.75rem">Send Rate</h2>
+            <div class="slider-row">
+              <span class="slider-label-left">Slow</span>
+              <input type="range" id="custom-rate" min="20" max="100" value="30" step="5" class="slider">
+              <span class="slider-label-right">Fast</span>
+              <span id="custom-rate-value" class="slider-val">30ms</span>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Audio Visualizer</h2>
+            <canvas id="audio-viz" width="400" height="80"></canvas>
           </div>
         </div>
       </section>
@@ -190,11 +255,62 @@
           <p id="no-presets" class="hint">No presets yet. Create animations in the Animation tab.</p>
         </div>
       </section>
+
+      <!-- DEV / PROTOCOL EXPLORER -->
+      <section id="tab-dev" class="tab-content">
+        <div class="panel">
+          <h2>Protocol Explorer</h2>
+          <p class="hint">Send raw 9-byte BLE commands to reverse-engineer the MELK-OT21 protocol. All commands are [0x7E, b1, CMD, p1, p2, p3, p4, b7, 0xEF].</p>
+
+          <div class="dev-row">
+            <label class="dev-label">Raw Hex (9 bytes)</label>
+            <input type="text" id="dev-raw" class="input-grow mono" placeholder="7E 04 07 01 FF FF FF 00 EF" value="7E 04 07 01 FF FF FF 00 EF">
+            <button id="dev-send-raw" class="btn btn-primary btn-small">Send</button>
+          </div>
+
+          <h3 class="dev-section-title">Quick Experiments</h3>
+          <div class="dev-grid">
+            <button class="btn btn-small dev-exp" data-exp="mic-then-color">Mic + Color overlay</button>
+            <button class="btn btn-small dev-exp" data-exp="color-then-mic">Color then Mic</button>
+            <button class="btn btn-small dev-exp" data-exp="mic-with-effect">Mic + HW Effect</button>
+            <button class="btn btn-small dev-exp" data-exp="mic-brightness">Mic + Brightness</button>
+            <button class="btn btn-small dev-exp" data-exp="mic-speed">Mic + Speed</button>
+            <button class="btn btn-small dev-exp" data-exp="cmd-0d">Cmd 0x0D (stream?)</button>
+            <button class="btn btn-small dev-exp" data-exp="cmd-0e">Cmd 0x0E (toggle?)</button>
+            <button class="btn btn-small dev-exp" data-exp="cmd-0f">Cmd 0x0F (EQ?)</button>
+          </div>
+
+          <div class="dev-row" style="margin-top:0.75rem">
+            <label class="dev-label">Mic Effect</label>
+            <select id="dev-mic-effect" class="input-small">
+              <option value="128">0x80 Energetic</option>
+              <option value="129">0x81 Rhythm</option>
+              <option value="130">0x82 Spectrum</option>
+              <option value="131">0x83 Rolling</option>
+              <option value="132">0x84 Pulse</option>
+              <option value="133">0x85 Cascade</option>
+              <option value="134">0x86 Rainbow</option>
+              <option value="135">0x87 Wave</option>
+            </select>
+            <label class="dev-label">Color</label>
+            <input type="color" id="dev-color" value="#ff0000" class="input-color">
+            <label class="dev-label">Param</label>
+            <input type="number" id="dev-param" value="50" min="0" max="255" class="input-small">
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Command Log</h2>
+          <div id="dev-log" class="dev-log"></div>
+          <button id="dev-clear-log" class="btn btn-small" style="margin-top:0.5rem">Clear</button>
+        </div>
+      </section>
     </main>
   </div>
 
   <script src="ble.js"></script>
   <script src="animation.js"></script>
+  <script src="audio-reactive.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

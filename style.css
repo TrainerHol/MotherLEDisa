@@ -564,6 +564,109 @@ header h1 {
 
 .preset-actions { display: flex; gap: 0.3rem; }
 
+/* Sound source tabs */
+.sound-source-tabs {
+  display: flex;
+  gap: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.sound-src-tab {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface-2);
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.sound-src-tab:not(:last-child) { border-right: 1px solid var(--border); }
+.sound-src-tab:hover { color: var(--text); }
+.sound-src-tab.active { background: var(--primary); color: #000; }
+
+.sound-section { display: none; }
+.sound-section.active { display: block; }
+
+.color-pair-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.color-pair-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.color-pair-label .input-color { width: 40px; height: 32px; }
+
+#audio-viz {
+  width: 100%;
+  height: 80px;
+  border-radius: var(--radius);
+  background: #111;
+  display: block;
+}
+
+/* Dev / Protocol Explorer */
+.dev-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.dev-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.mono { font-family: monospace; }
+
+.dev-section-title {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0.75rem 0 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dev-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.dev-exp { font-size: 0.7rem; }
+
+.dev-log {
+  background: #0a0e14;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: var(--success);
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  min-height: 60px;
+}
+
+.dev-log .log-err { color: var(--danger); }
+.dev-log .log-info { color: var(--primary); }
+
 /* Responsive */
 @media (max-width: 700px) {
   .panel-row { grid-template-columns: 1fr; }

@@ -233,6 +233,112 @@
     }
   });
 
+  // --- Sound source tab switching ---
+  document.querySelectorAll('.sound-src-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.sound-src-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.sound-section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`sound-${tab.dataset.src}`).classList.add('active');
+    });
+  });
+
+  // ======================
+  // CUSTOM SOUND REACTIVE
+  // ======================
+  let customSoundActive = false;
+  let selectedCustomMode = 'frequency';
+  const customToggle = document.getElementById('custom-sound-toggle');
+  const customStatus = document.getElementById('custom-sound-status');
+  const customStatusLabel = customStatus.querySelector('.sound-status-label');
+
+  // Build mode buttons
+  const customModeGrid = document.getElementById('custom-mode-grid');
+  AudioReactive.MODES.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'sound-effect-btn' + (m.id === selectedCustomMode ? ' active' : '');
+    btn.innerHTML = `<strong>${m.name}</strong><br><span style="font-size:0.65rem;color:var(--text-muted)">${m.desc}</span>`;
+    btn.onclick = () => {
+      customModeGrid.querySelectorAll('.sound-effect-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedCustomMode = m.id;
+      if (customSoundActive) AudioReactive.setConfig({ mode: m.id });
+    };
+    customModeGrid.appendChild(btn);
+  });
+
+  // Custom toggle
+  customToggle.addEventListener('click', async () => {
+    if (!customSoundActive) {
+      try {
+        const c1 = Animation.hexToRgb(document.getElementById('custom-color1').value);
+        const c2 = Animation.hexToRgb(document.getElementById('custom-color2').value);
+        await AudioReactive.start({
+          mode: selectedCustomMode,
+          color1: c1, color2: c2,
+          sensitivity: +document.getElementById('custom-sensitivity').value,
+          sendRate: +document.getElementById('custom-rate').value,
+        });
+
+        // Visualizer
+        const vizCanvas = document.getElementById('audio-viz');
+        const vizCtx = vizCanvas.getContext('2d');
+        AudioReactive.onFrame(({ color, freqData }) => {
+          vizCtx.fillStyle = '#111';
+          vizCtx.fillRect(0, 0, vizCanvas.width, vizCanvas.height);
+          const barW = vizCanvas.width / freqData.length;
+          const hex = `rgb(${color.r},${color.g},${color.b})`;
+          for (let i = 0; i < freqData.length; i++) {
+            const h = (freqData[i] / 255) * vizCanvas.height;
+            vizCtx.fillStyle = hex;
+            vizCtx.fillRect(i * barW, vizCanvas.height - h, barW - 1, h);
+          }
+        });
+
+        customSoundActive = true;
+        customStatus.classList.add('on');
+        customStatus.classList.remove('off');
+        customStatusLabel.textContent = 'Custom Sound: ON';
+        customToggle.textContent = 'Stop';
+        customToggle.className = 'btn btn-danger btn-wide';
+      } catch (e) {
+        alert('Audio error: ' + e.message);
+      }
+    } else {
+      AudioReactive.stop();
+      customSoundActive = false;
+      customStatus.classList.remove('on');
+      customStatus.classList.add('off');
+      customStatusLabel.textContent = 'Custom Sound: OFF';
+      customToggle.textContent = 'Start';
+      customToggle.className = 'btn btn-success btn-wide';
+    }
+  });
+
+  // Custom sensitivity
+  const customSens = document.getElementById('custom-sensitivity');
+  const customSensVal = document.getElementById('custom-sensitivity-value');
+  customSens.addEventListener('input', () => {
+    customSensVal.textContent = customSens.value + 'x';
+    if (customSoundActive) AudioReactive.setConfig({ sensitivity: +customSens.value });
+  });
+
+  // Custom send rate
+  const customRate = document.getElementById('custom-rate');
+  const customRateVal = document.getElementById('custom-rate-value');
+  customRate.addEventListener('input', () => {
+    customRateVal.textContent = customRate.value + 'ms';
+    if (customSoundActive) AudioReactive.setConfig({ sendRate: +customRate.value });
+  });
+
+  // Custom colors
+  document.getElementById('custom-color1').addEventListener('input', (e) => {
+    if (customSoundActive) AudioReactive.setConfig({ color1: Animation.hexToRgb(e.target.value) });
+  });
+  document.getElementById('custom-color2').addEventListener('input', (e) => {
+    if (customSoundActive) AudioReactive.setConfig({ color2: Animation.hexToRgb(e.target.value) });
+  });
+
   // ======================
   // ANIMATION TAB
   // ======================
@@ -570,6 +676,94 @@
       list.appendChild(card);
     });
   }
+
+  // ======================
+  // DEV / PROTOCOL EXPLORER
+  // ======================
+  const devLog = document.getElementById('dev-log');
+  function dlog(msg, cls = '') {
+    const line = document.createElement('div');
+    if (cls) line.className = cls;
+    line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    devLog.appendChild(line);
+    devLog.scrollTop = devLog.scrollHeight;
+  }
+
+  // Intercept BLE console logs for the dev panel
+  const origWarn = console.warn;
+  const origLog = console.log;
+  console.log = (...args) => {
+    origLog(...args);
+    const msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+    if (msg.includes('[BLE')) dlog(msg, 'log-info');
+  };
+  console.warn = (...args) => {
+    origWarn(...args);
+    const msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+    if (msg.includes('[BLE')) dlog(msg, 'log-err');
+  };
+
+  // Send raw hex
+  document.getElementById('dev-send-raw').addEventListener('click', () => {
+    const hex = document.getElementById('dev-raw').value.trim();
+    const bytes = hex.split(/\s+/).map(h => parseInt(h, 16));
+    if (bytes.length !== 9 || bytes.some(isNaN)) {
+      dlog('ERROR: Need exactly 9 hex bytes', 'log-err');
+      return;
+    }
+    dlog(`TX: ${bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
+    BLE.sendRaw('all', bytes);
+  });
+
+  // Quick experiments
+  document.querySelectorAll('.dev-exp').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const exp = btn.dataset.exp;
+      const micEff = +document.getElementById('dev-mic-effect').value;
+      const param = +document.getElementById('dev-param').value;
+      const rgb = Animation.hexToRgb(document.getElementById('dev-color').value);
+      const target = 'all';
+
+      dlog(`Running experiment: ${exp}`, 'log-info');
+
+      switch (exp) {
+        case 'mic-then-color':
+          await BLE.testMicWithColor(target, micEff, param, rgb.r, rgb.g, rgb.b);
+          dlog(`Mic effect 0x${micEff.toString(16)} + color rgb(${rgb.r},${rgb.g},${rgb.b})`);
+          break;
+        case 'color-then-mic':
+          await BLE.testColorThenMic(target, rgb.r, rgb.g, rgb.b, micEff, param);
+          dlog(`Color rgb(${rgb.r},${rgb.g},${rgb.b}) then mic effect 0x${micEff.toString(16)}`);
+          break;
+        case 'mic-with-effect':
+          await BLE.testMicWithEffect(target, micEff, 0x89, param, 70);
+          dlog(`Mic 0x${micEff.toString(16)} + HW effect 0x89 (Crossfade RGB)`);
+          break;
+        case 'mic-brightness':
+          await BLE.testMicWithBrightness(target, micEff, 70, param);
+          dlog(`Mic 0x${micEff.toString(16)} + brightness ${param}`);
+          break;
+        case 'mic-speed':
+          await BLE.testMicWithSpeed(target, micEff, 70, param);
+          dlog(`Mic 0x${micEff.toString(16)} + speed ${param}`);
+          break;
+        case 'cmd-0d':
+          await BLE.testStreamCmd(target, 0x0D, param);
+          dlog(`Cmd 0x0D (streaming mic sensitivity?) param=${param}`);
+          break;
+        case 'cmd-0e':
+          await BLE.testStreamCmd(target, 0x0E, param);
+          dlog(`Cmd 0x0E (toggle streaming?) param=${param}`);
+          break;
+        case 'cmd-0f':
+          await BLE.testStreamCmd(target, 0x0F, param);
+          dlog(`Cmd 0x0F (external mic EQ?) param=${param}`);
+          break;
+      }
+    });
+  });
+
+  document.getElementById('dev-clear-log').onclick = () => devLog.innerHTML = '';
 
   // --- Init ---
   updateColorUI();

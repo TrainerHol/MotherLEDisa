@@ -152,6 +152,82 @@ const BLE = (() => {
     await writeTarget(t, CMD.micDisable());
   }
 
+  // --- Experimental: reverse engineering commands ---
+  // Send raw 9-byte command for testing
+  async function sendRaw(t, bytes) {
+    console.log('[BLE:RAW]', bytes.map(b => b.toString(16).padStart(2,'0')).join(' '));
+    await writeTarget(t, bytes);
+  }
+
+  // Test: set color while mic mode is active (does it tint the effect?)
+  async function testMicWithColor(t, effectId, sensitivity, r, g, b) {
+    await writeTarget(t, CMD.micEnable());
+    await sleep(50);
+    await writeTarget(t, CMD.micEffect(effectId));
+    await sleep(50);
+    await writeTarget(t, CMD.micSensitivity(sensitivity));
+    await sleep(50);
+    // Try sending color on top of mic mode
+    await writeTarget(t, CMD.setColor(r, g, b));
+    console.log('[BLE:EXP] Sent color on top of mic mode');
+  }
+
+  // Test: set color first, then enable mic (does mic use the color as base?)
+  async function testColorThenMic(t, r, g, b, effectId, sensitivity) {
+    await writeTarget(t, CMD.setColor(r, g, b));
+    await sleep(100);
+    await writeTarget(t, CMD.micEnable());
+    await sleep(50);
+    await writeTarget(t, CMD.micEffect(effectId));
+    await sleep(50);
+    await writeTarget(t, CMD.micSensitivity(sensitivity));
+    console.log('[BLE:EXP] Set color then mic mode');
+  }
+
+  // Test: undocumented streaming commands
+  async function testStreamCmd(t, cmdId, param) {
+    const cmd = [0x7E, 0x04, cmdId & 0xFF, param & 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xEF];
+    console.log('[BLE:EXP] Stream cmd', cmdId.toString(16), 'param', param.toString(16));
+    await writeTarget(t, cmd);
+  }
+
+  // Test: set effect while mic mode is on (combine hardware effect with mic?)
+  async function testMicWithEffect(t, micEffectId, hwEffectId, speed, sensitivity) {
+    await writeTarget(t, CMD.micEnable());
+    await sleep(50);
+    await writeTarget(t, CMD.micEffect(micEffectId));
+    await sleep(50);
+    await writeTarget(t, CMD.micSensitivity(sensitivity));
+    await sleep(50);
+    // Now try a hardware effect on top
+    await writeTarget(t, CMD.setEffect(hwEffectId, speed));
+    console.log('[BLE:EXP] Sent hw effect on top of mic mode');
+  }
+
+  // Test: brightness during mic mode
+  async function testMicWithBrightness(t, effectId, sensitivity, brightness) {
+    await writeTarget(t, CMD.micEnable());
+    await sleep(50);
+    await writeTarget(t, CMD.micEffect(effectId));
+    await sleep(50);
+    await writeTarget(t, CMD.micSensitivity(sensitivity));
+    await sleep(50);
+    await writeTarget(t, CMD.setBrightness(brightness));
+    console.log('[BLE:EXP] Set brightness during mic mode');
+  }
+
+  // Test: speed during mic mode
+  async function testMicWithSpeed(t, effectId, sensitivity, speed) {
+    await writeTarget(t, CMD.micEnable());
+    await sleep(50);
+    await writeTarget(t, CMD.micEffect(effectId));
+    await sleep(50);
+    await writeTarget(t, CMD.micSensitivity(sensitivity));
+    await sleep(50);
+    await writeTarget(t, CMD.setSpeed(speed));
+    console.log('[BLE:EXP] Set speed during mic mode');
+  }
+
   // Effects library
   const EFFECTS = [
     { id: 0x87, name: 'Jump RGB',        cat: 'jump' },
@@ -195,7 +271,11 @@ const BLE = (() => {
     setEffect, setSpeed, enableMic, disableMic,
     setMicEffect, setMicSensitivity,
     activateSoundMode, deactivateSoundMode,
+    // Experimental
+    sendRaw, testMicWithColor, testColorThenMic,
+    testStreamCmd, testMicWithEffect,
+    testMicWithBrightness, testMicWithSpeed,
     write, writeAll, writeTarget,
-    CMD, EFFECTS, MIC_EFFECTS, devices,
+    CMD, EFFECTS, MIC_EFFECTS, devices, sleep,
   };
 })();
