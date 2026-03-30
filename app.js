@@ -74,7 +74,9 @@
 
   function renderDevices(connected) {
     const list = document.getElementById('device-list');
+    const empty = document.getElementById('device-empty');
     list.innerHTML = '';
+    empty.style.display = connected.length === 0 ? 'block' : 'none';
     connected.forEach(d => {
       const card = document.createElement('div');
       card.className = 'device-card';
@@ -956,4 +958,24 @@
   updateColorUI();
   initTimeline();
   window.addEventListener('resize', () => { if (currentTab === 'animation') renderTimeline(); });
+
+  // BLE support check
+  const supportDiv = document.getElementById('ble-support-status');
+  const checks = [
+    { label: 'Web Bluetooth API', ok: !!navigator.bluetooth },
+    { label: 'Secure Context (HTTPS/localhost)', ok: window.isSecureContext },
+  ];
+  if (navigator.bluetooth?.getAvailability) {
+    navigator.bluetooth.getAvailability().then(avail => {
+      checks.push({ label: 'Bluetooth Available', ok: avail });
+      renderChecks();
+    });
+  } else {
+    renderChecks();
+  }
+  function renderChecks() {
+    supportDiv.innerHTML = checks.map(c =>
+      `<div class="ble-check ${c.ok ? 'ble-check-ok' : 'ble-check-fail'}">${c.ok ? '&#10003;' : '&#10007;'} ${c.label}</div>`
+    ).join('');
+  }
 })();

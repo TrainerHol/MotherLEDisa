@@ -34,8 +34,16 @@
             <h2>Bluetooth Devices</h2>
             <button id="btn-scan" class="btn btn-primary">Scan for Devices</button>
           </div>
-          <p class="hint">Discover nearby ELK-BLEDOM / MELK tower lights via Web Bluetooth.</p>
           <div id="device-list"></div>
+          <div id="device-empty" class="device-empty">
+            <div class="device-empty-icon">💡</div>
+            <p>No devices connected</p>
+            <p class="hint" style="margin-bottom:0">Click <strong>Scan for Devices</strong> to find nearby MELK / ELK-BLEDOM tower lights. Make sure Bluetooth is enabled and the tower is powered on.</p>
+          </div>
+        </div>
+        <div class="panel" id="ble-support-panel">
+          <h2>Browser Support</h2>
+          <div id="ble-support-status"></div>
         </div>
       </section>
 
