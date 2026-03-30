@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MotherLEDisa</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>MotherLEDisa</h1>
+      <div id="connection-status">
+        <span id="status-dot" class="dot disconnected"></span>
+        <span id="status-text">No devices</span>
+      </div>
+    </header>
+
+    <nav id="tabs">
+      <button class="tab active" data-tab="devices">Devices</button>
+      <button class="tab" data-tab="control">Control</button>
+      <button class="tab" data-tab="sound">Sound</button>
+      <button class="tab" data-tab="animation">Animation</button>
+      <button class="tab" data-tab="presets">Presets</button>
+    </nav>
+
+    <main>
+      <!-- DEVICES -->
+      <section id="tab-devices" class="tab-content active">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Bluetooth Devices</h2>
+            <button id="btn-scan" class="btn btn-primary">Scan for Devices</button>
+          </div>
+          <p class="hint">Discover nearby ELK-BLEDOM / MELK tower lights via Web Bluetooth.</p>
+          <div id="device-list"></div>
+        </div>
+      </section>
+
+      <!-- CONTROL -->
+      <section id="tab-control" class="tab-content">
+        <div class="panel">
+          <div class="control-top-row">
+            <select id="control-target" class="select-target">
+              <option value="all">All Devices</option>
+            </select>
+            <div class="power-btns">
+              <button id="btn-power-on" class="btn btn-success btn-icon" title="Power On">ON</button>
+              <button id="btn-power-off" class="btn btn-danger btn-icon" title="Power Off">OFF</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <div class="panel color-panel">
+            <h2>Color</h2>
+            <canvas id="color-wheel" width="240" height="240"></canvas>
+            <div class="color-info-row">
+              <div id="color-preview" class="color-swatch"></div>
+              <input type="text" id="color-hex" class="input-hex" value="#FF0000" maxlength="7">
+            </div>
+          </div>
+          <div class="panel">
+            <h2>Brightness</h2>
+            <div class="slider-row">
+              <input type="range" id="brightness-slider" min="0" max="100" value="100" class="slider">
+              <span id="brightness-value" class="slider-val">100%</span>
+            </div>
+            <h2 style="margin-top:1rem">Effect Speed</h2>
+            <div class="slider-row">
+              <input type="range" id="speed-slider" min="0" max="100" value="50" class="slider">
+              <span id="speed-value" class="slider-val">50</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Effects</h2>
+          <div class="effect-grid" id="effect-grid"></div>
+        </div>
+      </section>
+
+      <!-- SOUND REACTIVE -->
+      <section id="tab-sound" class="tab-content">
+        <div class="panel">
+          <h2>Sound Reactive Mode</h2>
+          <p class="hint">Uses the tower's built-in microphone. Audio is processed on-device — no phone mic needed.</p>
+          <select id="sound-target" class="select-target">
+            <option value="all">All Devices</option>
+          </select>
+        </div>
+
+        <div class="panel">
+          <div class="sound-toggle-row">
+            <div id="sound-status" class="sound-status off">
+              <span class="sound-status-dot"></span>
+              <span class="sound-status-label">Sound Mode: OFF</span>
+            </div>
+            <button id="sound-toggle" class="btn btn-success btn-wide">Enable Sound Mode</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Sound Effect</h2>
+          <div class="sound-effect-grid" id="sound-effect-grid"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Sensitivity</h2>
+          <div class="slider-row">
+            <span class="slider-label-left">Low</span>
+            <input type="range" id="mic-sensitivity" min="0" max="100" value="70" class="slider slider-accent">
+            <span class="slider-label-right">High</span>
+            <span id="mic-sensitivity-value" class="slider-val">70</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANIMATION -->
+      <section id="tab-animation" class="tab-content">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Timeline Editor</h2>
+            <div class="anim-controls">
+              <button id="anim-play" class="btn btn-small btn-success" title="Play">&#9654;</button>
+              <button id="anim-pause" class="btn btn-small" title="Pause">&#9646;&#9646;</button>
+              <button id="anim-stop" class="btn btn-small btn-danger" title="Stop">&#9632;</button>
+              <span class="sep"></span>
+              <label class="inline-label">
+                <input type="number" id="anim-duration" value="5000" min="500" max="60000" step="100" class="input-small"> ms
+              </label>
+              <select id="anim-loop" class="input-small">
+                <option value="infinite" selected>Loop</option>
+                <option value="once">Once</option>
+                <option value="pingpong">Ping-Pong</option>
+              </select>
+              <label class="inline-label" title="Send colors to device during playback">
+                <input type="checkbox" id="anim-live" checked> Live
+              </label>
+            </div>
+          </div>
+
+          <!-- Time display -->
+          <div id="time-display" class="time-display">0.00s / 5.00s</div>
+
+          <!-- Timeline -->
+          <div id="timeline-container">
+            <canvas id="time-ruler" height="30"></canvas>
+            <div id="timeline-tracks"></div>
+            <div id="playhead-line"></div>
+            <div id="scrubber-handle" title="Drag to scrub"></div>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="timeline-toolbar">
+            <button id="kf-add" class="btn btn-small btn-primary">+ Keyframe</button>
+            <button id="kf-delete" class="btn btn-small btn-danger">Delete</button>
+            <select id="kf-segment" class="input-small">
+              <option value="0">Track 1</option>
+              <option value="1">Track 2</option>
+              <option value="2">Track 3</option>
+              <option value="3">Track 4</option>
+              <option value="4">Track 5</option>
+            </select>
+            <select id="kf-interp" class="input-small">
+              <option value="smooth">Smooth</option>
+              <option value="step">Step</option>
+            </select>
+            <input type="color" id="kf-color" value="#ff0000" class="input-color">
+            <div class="anim-preview-box">
+              <canvas id="anim-preview" width="40" height="120"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="save-row">
+            <input type="text" id="anim-name" placeholder="Animation name..." class="input-grow">
+            <button id="anim-save" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRESETS -->
+      <section id="tab-presets" class="tab-content">
+        <div class="panel">
+          <h2>Saved Animations</h2>
+          <div id="preset-list" class="preset-grid"></div>
+          <p id="no-presets" class="hint">No presets yet. Create animations in the Animation tab.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="ble.js"></script>
+  <script src="animation.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
