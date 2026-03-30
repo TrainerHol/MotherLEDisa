@@ -36,7 +36,7 @@ data class DiscoveredDevice(
  */
 class DeviceScanner {
 
-    private val scanner: BluetoothLeScannerCompat = BluetoothLeScannerCompat.getScanner()
+    private val scanner: BluetoothLeScannerCompat by lazy { BluetoothLeScannerCompat.getScanner() }
 
     private val _discoveredDevices = MutableStateFlow<List<DiscoveredDevice>>(emptyList())
     /** Flow of currently discovered devices */
