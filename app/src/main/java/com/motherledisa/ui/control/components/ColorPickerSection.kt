@@ -80,6 +80,7 @@ fun ColorPickerSection(
         )
 
         // D-08: Circular HSV color wheel
+        @Suppress("DEPRECATION")
         HarmonyColorPicker(
             harmonyMode = ColorHarmonyMode.NONE,
             modifier = Modifier

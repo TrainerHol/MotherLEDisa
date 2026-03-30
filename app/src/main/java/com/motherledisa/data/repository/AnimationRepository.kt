@@ -15,9 +15,10 @@ import javax.inject.Singleton
  */
 @Singleton
 class AnimationRepository @Inject constructor(
-    private val animationDao: AnimationDao,
-    private val keyframeConverter: KeyframeListConverter
+    private val animationDao: AnimationDao
 ) {
+    private val keyframeConverter = KeyframeListConverter()
+
     /** Get all animations as Flow of domain models */
     fun getAllAnimations(): Flow<List<Animation>> =
         animationDao.getAllAnimations().map { entities ->

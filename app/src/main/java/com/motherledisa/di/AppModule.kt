@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.motherledisa.data.local.AnimationDao
 import com.motherledisa.data.local.AppDatabase
-import com.motherledisa.data.local.KeyframeListConverter
 import com.motherledisa.data.local.TowerConfigDao
 import dagger.Module
 import dagger.Provides
@@ -32,29 +31,19 @@ object AppModule {
     }
 
     /**
-     * Provides KeyframeListConverter for Room TypeConverter.
-     */
-    @Provides
-    @Singleton
-    fun provideKeyframeListConverter(json: Json): KeyframeListConverter =
-        KeyframeListConverter(json)
-
-    /**
      * Provides the Room database instance.
      * Singleton - single database for entire app lifecycle.
      */
     @Provides
     @Singleton
     fun provideAppDatabase(
-        @ApplicationContext context: Context,
-        keyframeListConverter: KeyframeListConverter
+        @ApplicationContext context: Context
     ): AppDatabase {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
             "motherledisa_database"
         )
-            .addTypeConverter(keyframeListConverter)
             .addMigrations(AppDatabase.MIGRATION_1_2)
             .build()
     }

@@ -16,7 +16,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 @Database(
     entities = [TowerConfigEntity::class, AnimationEntity::class],
     version = 2,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(KeyframeListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
