@@ -184,30 +184,31 @@
 
       <!-- ANIMATION -->
       <section id="tab-animation" class="tab-content">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Timeline Editor</h2>
-            <div class="anim-controls">
-              <button id="anim-play" class="btn btn-small btn-success" title="Play">&#9654;</button>
-              <button id="anim-pause" class="btn btn-small" title="Pause">&#9646;&#9646;</button>
-              <button id="anim-stop" class="btn btn-small btn-danger" title="Stop">&#9632;</button>
-              <span class="sep"></span>
-              <label class="inline-label">
-                <input type="number" id="anim-duration" value="5000" min="500" max="60000" step="100" class="input-small"> ms
-              </label>
+        <div class="panel anim-main-panel">
+          <!-- Transport bar -->
+          <div class="transport-bar">
+            <div class="transport-left">
+              <button id="anim-play" class="btn btn-transport btn-success" title="Play">&#9654;</button>
+              <button id="anim-pause" class="btn btn-transport" title="Pause">&#10074;&#10074;</button>
+              <button id="anim-stop" class="btn btn-transport btn-danger" title="Stop">&#9632;</button>
+            </div>
+            <div class="transport-center">
+              <div id="time-display" class="time-display">0.00s / 5.00s</div>
+            </div>
+            <div class="transport-right">
+              <input type="number" id="anim-duration" value="5000" min="500" max="60000" step="100" class="input-small" title="Duration (ms)">
+              <span class="transport-label">ms</span>
               <select id="anim-loop" class="input-small">
                 <option value="infinite" selected>Loop</option>
                 <option value="once">Once</option>
                 <option value="pingpong">Ping-Pong</option>
               </select>
-              <label class="inline-label" title="Send colors to device during playback">
-                <input type="checkbox" id="anim-live" checked> Live
+              <label class="transport-live" title="Send to device during playback">
+                <input type="checkbox" id="anim-live" checked>
+                <span>Live</span>
               </label>
             </div>
           </div>
-
-          <!-- Time display -->
-          <div id="time-display" class="time-display">0.00s / 5.00s</div>
 
           <!-- Timeline -->
           <div id="timeline-container">
@@ -217,24 +218,35 @@
             <div id="scrubber-handle" title="Drag to scrub"></div>
           </div>
 
-          <!-- Toolbar -->
-          <div class="timeline-toolbar">
-            <button id="kf-add" class="btn btn-small btn-primary">+ Keyframe</button>
-            <button id="kf-delete" class="btn btn-small btn-danger">Delete</button>
-            <select id="kf-segment" class="input-small">
-              <option value="0">Track 1</option>
-              <option value="1">Track 2</option>
-              <option value="2">Track 3</option>
-              <option value="3">Track 4</option>
-              <option value="4">Track 5</option>
-            </select>
-            <select id="kf-interp" class="input-small">
-              <option value="smooth">Smooth</option>
-              <option value="step">Step</option>
-            </select>
-            <input type="color" id="kf-color" value="#ff0000" class="input-color">
-            <div class="anim-preview-box">
-              <canvas id="anim-preview" width="40" height="120"></canvas>
+          <!-- Keyframe toolbar -->
+          <div class="kf-toolbar">
+            <div class="kf-toolbar-left">
+              <button id="kf-add" class="btn btn-small btn-primary">+ Keyframe</button>
+              <button id="kf-delete" class="btn btn-small btn-danger">Delete</button>
+              <select id="kf-segment" class="input-small" title="Target track">
+                <option value="0">T1</option>
+                <option value="1">T2</option>
+                <option value="2">T3</option>
+                <option value="3">T4</option>
+                <option value="4">T5</option>
+              </select>
+              <select id="kf-interp" class="input-small" title="Interpolation">
+                <option value="smooth">Smooth</option>
+                <option value="step">Step</option>
+              </select>
+              <input type="color" id="kf-color" value="#ff0000" class="input-color" title="Keyframe color">
+            </div>
+            <div class="kf-toolbar-right">
+              <!-- Selected keyframe info -->
+              <div id="kf-info" class="kf-info">
+                <span id="kf-info-text" class="kf-info-text">No keyframe selected</span>
+                <label class="kf-time-label">
+                  t=<input type="number" id="kf-time-input" class="input-tiny" min="0" step="50" value="0" disabled>ms
+                </label>
+              </div>
+              <div class="anim-preview-box">
+                <canvas id="anim-preview" width="36" height="100"></canvas>
+              </div>
             </div>
           </div>
         </div>

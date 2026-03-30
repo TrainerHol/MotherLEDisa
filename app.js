@@ -406,6 +406,7 @@
           selectedKeyframe = kf.id;
           document.getElementById('kf-color').value = kf.color;
           document.getElementById('kf-interp').value = kf.interpolation;
+          updateKfInfo();
           renderTimeline();
           startKfDrag(kf, lane, e);
         });
@@ -505,6 +506,33 @@
       `${(t / 1000).toFixed(2)}s / ${(currentAnimation.durationMs / 1000).toFixed(2)}s`;
   }
 
+  // Keyframe info display
+  function updateKfInfo() {
+    const infoText = document.getElementById('kf-info-text');
+    const timeInput = document.getElementById('kf-time-input');
+    if (!selectedKeyframe) {
+      infoText.textContent = 'No keyframe selected';
+      timeInput.disabled = true;
+      timeInput.value = 0;
+      return;
+    }
+    const kf = currentAnimation.keyframes.find(k => k.id === selectedKeyframe);
+    if (!kf) { selectedKeyframe = null; updateKfInfo(); return; }
+    infoText.textContent = `T${kf.segment + 1} | ${kf.interpolation}`;
+    timeInput.disabled = false;
+    timeInput.value = kf.timeMs;
+    timeInput.max = currentAnimation.durationMs;
+  }
+
+  // Keyframe time input
+  document.getElementById('kf-time-input').addEventListener('change', () => {
+    const kf = currentAnimation.keyframes.find(k => k.id === selectedKeyframe);
+    if (kf) {
+      kf.timeMs = Math.max(0, Math.min(currentAnimation.durationMs, +document.getElementById('kf-time-input').value));
+      renderTimeline();
+    }
+  });
+
   // Add keyframe
   document.getElementById('kf-add').addEventListener('click', () => {
     const seg = +document.getElementById('kf-segment').value;
@@ -516,6 +544,7 @@
     currentAnimation.keyframes.push(kf);
     selectedKeyframe = kf.id;
     renderTimeline();
+    updateKfInfo();
   });
 
   // Delete keyframe
@@ -524,6 +553,7 @@
     currentAnimation.keyframes = currentAnimation.keyframes.filter(k => k.id !== selectedKeyframe);
     selectedKeyframe = null;
     renderTimeline();
+    updateKfInfo();
   });
 
   // Update selected keyframe properties
@@ -534,7 +564,7 @@
 
   document.getElementById('kf-interp').addEventListener('change', () => {
     const kf = currentAnimation.keyframes.find(k => k.id === selectedKeyframe);
-    if (kf) { kf.interpolation = document.getElementById('kf-interp').value; renderTimeline(); }
+    if (kf) { kf.interpolation = document.getElementById('kf-interp').value; renderTimeline(); updateKfInfo(); }
   });
 
   // Duration

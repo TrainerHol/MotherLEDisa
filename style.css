@@ -484,57 +484,122 @@ header h1 {
   box-shadow: 0 1px 4px rgba(0,0,0,0.5);
 }
 
-.time-display {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-align: center;
-  margin-bottom: 0.25rem;
-  font-variant-numeric: tabular-nums;
-  font-family: monospace;
-}
-
-.timeline-toolbar {
+/* Transport bar */
+.transport-bar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-wrap: wrap;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.5rem;
 }
 
-.anim-controls {
+.transport-left { display: flex; gap: 0.25rem; }
+.transport-center { flex: 1; text-align: center; }
+.transport-right {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  flex-wrap: wrap;
+  gap: 0.35rem;
 }
 
-.sep { width: 1px; height: 20px; background: var(--border); }
-
-.inline-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.75rem;
+.transport-label {
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
-.inline-label select,
-.inline-label input[type="number"] {
+.transport-live {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.btn-transport {
+  width: 32px; height: 28px;
+  padding: 0;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-display {
+  font-size: 0.8rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  font-family: monospace;
+  font-weight: 600;
+}
+
+/* Keyframe toolbar */
+.kf-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.kf-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.kf-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kf-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.kf-info-text {
+  font-style: italic;
+}
+
+.kf-time-label {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.input-tiny {
+  width: 52px;
+  padding: 0.15rem 0.25rem;
   background: var(--surface-2);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
   color: var(--text);
-  padding: 0.15rem 0.3rem;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  font-family: monospace;
+  text-align: right;
 }
+
+.input-tiny:disabled { opacity: 0.4; }
+
+.anim-main-panel { padding-bottom: 0.5rem; }
 
 .save-row { display: flex; gap: 0.5rem; }
 
 .anim-preview-box {
-  margin-left: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: #111;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 /* Presets */
