@@ -176,8 +176,23 @@
           </div>
 
           <div class="panel">
-            <h2>Audio Visualizer</h2>
-            <canvas id="audio-viz" width="400" height="80"></canvas>
+            <h2>Audio Source</h2>
+            <div class="audio-src-row">
+              <label class="radio-label">
+                <input type="radio" name="audio-src" value="mic" checked> Microphone
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="audio-src" value="system"> System Audio (screen share)
+              </label>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="viz-header">
+              <h2>Live Output</h2>
+              <div id="viz-color-swatch" class="viz-swatch"></div>
+            </div>
+            <canvas id="audio-viz" width="600" height="100"></canvas>
           </div>
         </div>
       </section>

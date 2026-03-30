@@ -273,26 +273,50 @@
       try {
         const c1 = Animation.hexToRgb(document.getElementById('custom-color1').value);
         const c2 = Animation.hexToRgb(document.getElementById('custom-color2').value);
+        const useSystem = document.querySelector('input[name="audio-src"]:checked').value === 'system';
         await AudioReactive.start({
           mode: selectedCustomMode,
           color1: c1, color2: c2,
           sensitivity: +document.getElementById('custom-sensitivity').value,
           sendRate: +document.getElementById('custom-rate').value,
+          useSystemAudio: useSystem,
         });
 
-        // Visualizer
+        // Visualizer with gradient bars and color swatch
         const vizCanvas = document.getElementById('audio-viz');
         const vizCtx = vizCanvas.getContext('2d');
-        AudioReactive.onFrame(({ color, freqData }) => {
-          vizCtx.fillStyle = '#111';
+        const swatch = document.getElementById('viz-color-swatch');
+        AudioReactive.onFrame(({ color, freqData, rms }) => {
+          // Background
+          vizCtx.fillStyle = '#0a0e14';
           vizCtx.fillRect(0, 0, vizCanvas.width, vizCanvas.height);
-          const barW = vizCanvas.width / freqData.length;
-          const hex = `rgb(${color.r},${color.g},${color.b})`;
+
+          // Frequency bars with gradient
+          const barW = Math.max(2, vizCanvas.width / freqData.length - 1);
           for (let i = 0; i < freqData.length; i++) {
             const h = (freqData[i] / 255) * vizCanvas.height;
-            vizCtx.fillStyle = hex;
-            vizCtx.fillRect(i * barW, vizCanvas.height - h, barW - 1, h);
+            const x = i * (barW + 1);
+            // Color gradient from bottom (dim) to top (bright)
+            const grad = vizCtx.createLinearGradient(x, vizCanvas.height, x, vizCanvas.height - h);
+            grad.addColorStop(0, `rgba(${color.r},${color.g},${color.b},0.3)`);
+            grad.addColorStop(1, `rgb(${color.r},${color.g},${color.b})`);
+            vizCtx.fillStyle = grad;
+            vizCtx.fillRect(x, vizCanvas.height - h, barW, h);
           }
+
+          // RMS level indicator line
+          const rmsY = vizCanvas.height - (Math.min(1, rms * 2) * vizCanvas.height);
+          vizCtx.strokeStyle = `rgba(${color.r},${color.g},${color.b},0.5)`;
+          vizCtx.lineWidth = 1;
+          vizCtx.setLineDash([4, 4]);
+          vizCtx.beginPath();
+          vizCtx.moveTo(0, rmsY);
+          vizCtx.lineTo(vizCanvas.width, rmsY);
+          vizCtx.stroke();
+          vizCtx.setLineDash([]);
+
+          // Update swatch
+          swatch.style.background = `rgb(${color.r},${color.g},${color.b})`;
         });
 
         customSoundActive = true;
