@@ -223,6 +223,7 @@
             <div class="kf-toolbar-left">
               <button id="kf-add" class="btn btn-small btn-primary">+ Keyframe</button>
               <button id="kf-delete" class="btn btn-small btn-danger">Delete</button>
+              <button id="kf-clear" class="btn btn-small" title="Clear all keyframes">Clear</button>
               <select id="kf-segment" class="input-small" title="Target track">
                 <option value="0">T1</option>
                 <option value="1">T2</option>
@@ -252,7 +253,16 @@
         </div>
 
         <div class="panel">
-          <div class="save-row">
+          <h2>Templates</h2>
+          <div class="template-grid">
+            <button class="btn btn-small anim-template" data-tpl="rainbow">Rainbow Sweep</button>
+            <button class="btn btn-small anim-template" data-tpl="pulse">Color Pulse</button>
+            <button class="btn btn-small anim-template" data-tpl="fire">Fire</button>
+            <button class="btn btn-small anim-template" data-tpl="ocean">Ocean</button>
+            <button class="btn btn-small anim-template" data-tpl="strobe">Strobe</button>
+            <button class="btn btn-small anim-template" data-tpl="sunset">Sunset Fade</button>
+          </div>
+          <div class="save-row" style="margin-top:0.5rem">
             <input type="text" id="anim-name" placeholder="Animation name..." class="input-grow">
             <button id="anim-save" class="btn btn-primary">Save</button>
           </div>

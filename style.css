@@ -592,6 +592,23 @@ header h1 {
 
 .anim-main-panel { padding-bottom: 0.5rem; }
 
+.template-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.anim-template {
+  background: linear-gradient(135deg, var(--surface-2), var(--border));
+  border-color: var(--border);
+}
+
+.anim-template:hover {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--surface-2), rgba(188,140,255,0.15));
+}
+
 .save-row { display: flex; gap: 0.5rem; }
 
 .anim-preview-box {

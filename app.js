@@ -556,6 +556,15 @@
     updateKfInfo();
   });
 
+  // Clear all keyframes
+  document.getElementById('kf-clear').addEventListener('click', () => {
+    if (currentAnimation.keyframes.length === 0) return;
+    currentAnimation.keyframes = [];
+    selectedKeyframe = null;
+    renderTimeline();
+    updateKfInfo();
+  });
+
   // Update selected keyframe properties
   document.getElementById('kf-color').addEventListener('input', () => {
     const kf = currentAnimation.keyframes.find(k => k.id === selectedKeyframe);
@@ -615,6 +624,58 @@
     setPlayheadTime(0);
     renderPreviewCanvas();
   };
+
+  // Animation templates
+  const TEMPLATES = {
+    rainbow: { duration: 4000, keyframes: [
+      { t: 0, s: 0, c: '#ff0000' }, { t: 800, s: 0, c: '#ff8800' }, { t: 1600, s: 0, c: '#ffff00' },
+      { t: 2400, s: 0, c: '#00ff00' }, { t: 3200, s: 0, c: '#0088ff' }, { t: 4000, s: 0, c: '#ff0000' },
+    ]},
+    pulse: { duration: 2000, keyframes: [
+      { t: 0, s: 0, c: '#ff0044' }, { t: 500, s: 0, c: '#ff0044' },
+      { t: 600, s: 0, c: '#ffffff' }, { t: 800, s: 0, c: '#ff0044' },
+      { t: 1000, s: 0, c: '#0044ff' }, { t: 1500, s: 0, c: '#0044ff' },
+      { t: 1600, s: 0, c: '#ffffff' }, { t: 1800, s: 0, c: '#0044ff' },
+      { t: 2000, s: 0, c: '#ff0044' },
+    ]},
+    fire: { duration: 3000, keyframes: [
+      { t: 0, s: 0, c: '#ff2200' }, { t: 500, s: 0, c: '#ff6600' },
+      { t: 1000, s: 0, c: '#ffaa00' }, { t: 1500, s: 0, c: '#ff4400' },
+      { t: 2000, s: 0, c: '#ff8800' }, { t: 2500, s: 0, c: '#ff2200' },
+      { t: 3000, s: 0, c: '#ff2200' },
+    ]},
+    ocean: { duration: 5000, keyframes: [
+      { t: 0, s: 0, c: '#003366' }, { t: 1250, s: 0, c: '#0077aa' },
+      { t: 2500, s: 0, c: '#00bbcc' }, { t: 3750, s: 0, c: '#0077aa' },
+      { t: 5000, s: 0, c: '#003366' },
+    ]},
+    strobe: { duration: 1000, keyframes: [
+      { t: 0, s: 0, c: '#ffffff', i: 'step' }, { t: 125, s: 0, c: '#000000', i: 'step' },
+      { t: 250, s: 0, c: '#ffffff', i: 'step' }, { t: 375, s: 0, c: '#000000', i: 'step' },
+      { t: 500, s: 0, c: '#ffffff', i: 'step' }, { t: 625, s: 0, c: '#000000', i: 'step' },
+      { t: 750, s: 0, c: '#ffffff', i: 'step' }, { t: 875, s: 0, c: '#000000', i: 'step' },
+    ]},
+    sunset: { duration: 6000, keyframes: [
+      { t: 0, s: 0, c: '#ff4400' }, { t: 1500, s: 0, c: '#ff6644' },
+      { t: 3000, s: 0, c: '#cc3366' }, { t: 4500, s: 0, c: '#663399' },
+      { t: 6000, s: 0, c: '#1a1a44' },
+    ]},
+  };
+
+  document.querySelectorAll('.anim-template').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tpl = TEMPLATES[btn.dataset.tpl];
+      if (!tpl) return;
+      currentAnimation = Animation.createAnimation(btn.textContent, tpl.duration);
+      currentAnimation.keyframes = tpl.keyframes.map(k =>
+        Animation.createKeyframe(k.t, k.s, k.c, k.i || 'smooth')
+      );
+      document.getElementById('anim-duration').value = tpl.duration;
+      selectedKeyframe = null;
+      initTimeline();
+      updateKfInfo();
+    });
+  });
 
   // Save
   document.getElementById('anim-save').addEventListener('click', () => {
