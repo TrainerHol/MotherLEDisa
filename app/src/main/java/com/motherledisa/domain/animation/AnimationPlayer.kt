@@ -17,16 +17,13 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Coroutine-based animation playback engine.
  * Per D-10: Play triggers both preview AND device simultaneously.
  * Per D-12: 30fps (~33ms delay) to prevent BLE queue flooding.
  */
-@Singleton
-class AnimationPlayer @Inject constructor(
+class AnimationPlayer(
     private val connectionManager: TowerConnectionManager,
     private val evaluator: AnimationEvaluator
 ) {

@@ -16,16 +16,12 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
-
 /**
  * Orchestrates animations across multiple towers with timing modes.
  * Per D-04: Mode is global across all towers.
  * Per D-08: Accept 20-50ms BLE latency variance.
  */
-@Singleton
-class OrchestrationManager @Inject constructor(
+class OrchestrationManager(
     private val connectionManager: TowerConnectionManager,
     private val animationPlayer: AnimationPlayer
 ) {

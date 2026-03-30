@@ -82,18 +82,6 @@ jobs:
           set -euo pipefail
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > release-keystore.jks
 
-      - name: Verify keystore
-        if: ${{ env.ANDROID_KEYSTORE_BASE64 != '' }}
-        shell: bash
-        env:
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        run: |
-          echo "Keystore size: $(wc -c < release-keystore.jks) bytes"
-          echo "Alias length: ${#ANDROID_KEY_ALIAS} chars"
-          echo "Alias hex: $(echo -n "$ANDROID_KEY_ALIAS" | xxd -p)"
-          keytool -list -keystore release-keystore.jks -storepass "$ANDROID_KEYSTORE_PASSWORD" 2>&1 | head -20
-
       - name: Assemble release APK
         env:
           ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release-keystore.jks

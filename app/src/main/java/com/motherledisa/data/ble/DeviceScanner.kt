@@ -11,9 +11,6 @@ import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanResult
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
-
 /**
  * Discovered BLE device information.
  */
@@ -37,8 +34,7 @@ data class DiscoveredDevice(
  * CRITICAL: ScanFilter prevents Android 7+ 30-second scan timeout.
  * Reference: RESEARCH.md Pattern 4 - Continuous Scanning with Filters
  */
-@Singleton
-class DeviceScanner @Inject constructor() {
+class DeviceScanner {
 
     private val scanner: BluetoothLeScannerCompat = BluetoothLeScannerCompat.getScanner()
 

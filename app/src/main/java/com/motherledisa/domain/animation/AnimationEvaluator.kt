@@ -3,9 +3,6 @@ package com.motherledisa.domain.animation
 import com.motherledisa.domain.model.Animation
 import com.motherledisa.domain.model.InterpolationMode
 import com.motherledisa.domain.model.Keyframe
-import javax.inject.Inject
-import javax.inject.Singleton
-
 /**
  * Result of evaluating animation at a specific time.
  * Contains color and brightness for each segment.
@@ -21,8 +18,7 @@ data class FrameState(
  * Evaluates animation keyframes at any point in time.
  * Handles interpolation between keyframes per D-07.
  */
-@Singleton
-class AnimationEvaluator @Inject constructor() {
+class AnimationEvaluator {
 
     /** Number of tower segments per D-05 */
     private val segmentCount = 5

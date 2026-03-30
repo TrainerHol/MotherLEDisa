@@ -1,7 +1,6 @@
 package com.motherledisa
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -12,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
-import com.motherledisa.data.ble.BleConnectionService
 import com.motherledisa.ui.navigation.NavGraph
 import com.motherledisa.ui.theme.MotherLEDisaTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +34,6 @@ class MainActivity : ComponentActivity() {
         permissionsGranted = allGranted
         if (allGranted) {
             Timber.d("All BLE permissions granted")
-            startBleService()
         } else {
             Timber.w("Some BLE permissions denied: ${permissions.filter { !it.value }.keys}")
         }
@@ -70,7 +67,6 @@ class MainActivity : ComponentActivity() {
         if (missingPermissions.isEmpty()) {
             Timber.d("All BLE permissions already granted")
             permissionsGranted = true
-            startBleService()
         } else {
             Timber.d("Requesting BLE permissions: $missingPermissions")
             permissionLauncher.launch(missingPermissions.toTypedArray())
@@ -97,19 +93,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    /**
-     * Starts the BLE connection foreground service.
-     * Required for background BLE stability (D-14).
-     */
-    private fun startBleService() {
-        val serviceIntent = Intent(this, BleConnectionService::class.java)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(serviceIntent)
-        } else {
-            startService(serviceIntent)
-        }
-
-        Timber.d("BLE foreground service started")
-    }
 }

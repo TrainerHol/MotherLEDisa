@@ -17,8 +17,6 @@ import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.ktx.suspend
 import timber.log.Timber
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Connected tower with its command queue.
@@ -41,8 +39,7 @@ data class ConnectedTower(
  *
  * Reference: RESEARCH.md Pattern 2 - MELK Device Initialization
  */
-@Singleton
-class TowerConnectionManager @Inject constructor(
+class TowerConnectionManager(
     private val context: Context
 ) {
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
