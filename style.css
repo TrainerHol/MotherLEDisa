@@ -403,7 +403,18 @@ header h1 {
 
 .effect-btn:hover { border-color: var(--primary); background: rgba(88,166,255,0.08); }
 .effect-btn.active { border-color: var(--primary); background: rgba(88,166,255,0.15); color: var(--primary); }
-.effect-btn .cat-label { display: block; font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.15rem; }
+.effect-btn.effect-none { border-color: var(--accent); }
+
+.effect-cat-divider {
+  grid-column: 1 / -1;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0 0.1rem;
+  border-bottom: 1px solid var(--border);
+}
 
 /* Sound Reactive */
 .sound-toggle-row {

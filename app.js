@@ -172,15 +172,43 @@
   const speedSlider = document.getElementById('speed-slider');
   const speedVal = document.getElementById('speed-value');
   speedSlider.addEventListener('input', () => speedVal.textContent = speedSlider.value);
-  speedSlider.addEventListener('change', () => BLE.setSpeed(document.getElementById('control-target').value, +speedSlider.value));
+  speedSlider.addEventListener('change', () => {
+    const target = document.getElementById('control-target').value;
+    BLE.setSpeed(target, +speedSlider.value);
+    // Re-send active effect with new speed
+    if (activeEffect !== null) BLE.setEffect(target, activeEffect, +speedSlider.value);
+  });
 
-  // Effects grid
+  // Effects grid — grouped by category
   const effectGrid = document.getElementById('effect-grid');
   let activeEffect = null;
+
+  // "None" button to clear effects
+  const noneBtn = document.createElement('button');
+  noneBtn.className = 'effect-btn effect-none active';
+  noneBtn.textContent = 'Static Color';
+  noneBtn.onclick = () => {
+    effectGrid.querySelectorAll('.effect-btn').forEach(b => b.classList.remove('active'));
+    noneBtn.classList.add('active');
+    activeEffect = null;
+    // Send current color to clear effect
+    BLE.setColor(document.getElementById('control-target').value, currentColor.r, currentColor.g, currentColor.b);
+  };
+  effectGrid.appendChild(noneBtn);
+
+  let lastCat = '';
   BLE.EFFECTS.forEach(ef => {
+    // Category divider
+    if (ef.cat !== lastCat) {
+      lastCat = ef.cat;
+      const divider = document.createElement('div');
+      divider.className = 'effect-cat-divider';
+      divider.textContent = ef.cat.toUpperCase();
+      effectGrid.appendChild(divider);
+    }
     const btn = document.createElement('button');
     btn.className = 'effect-btn';
-    btn.innerHTML = `<span class="cat-label">${ef.cat}</span>${ef.name}`;
+    btn.textContent = ef.name;
     btn.onclick = () => {
       effectGrid.querySelectorAll('.effect-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
