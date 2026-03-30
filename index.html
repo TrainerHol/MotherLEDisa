@@ -61,6 +61,20 @@
               <div id="color-preview" class="color-swatch"></div>
               <input type="text" id="color-hex" class="input-hex" value="#FF0000" maxlength="7">
             </div>
+            <div class="quick-colors">
+              <button class="qcolor" data-c="#FF0000" style="background:#FF0000" title="Red"></button>
+              <button class="qcolor" data-c="#FF6600" style="background:#FF6600" title="Orange"></button>
+              <button class="qcolor" data-c="#FFFF00" style="background:#FFFF00" title="Yellow"></button>
+              <button class="qcolor" data-c="#00FF00" style="background:#00FF00" title="Green"></button>
+              <button class="qcolor" data-c="#00FFFF" style="background:#00FFFF" title="Cyan"></button>
+              <button class="qcolor" data-c="#0066FF" style="background:#0066FF" title="Blue"></button>
+              <button class="qcolor" data-c="#8800FF" style="background:#8800FF" title="Purple"></button>
+              <button class="qcolor" data-c="#FF00FF" style="background:#FF00FF" title="Magenta"></button>
+              <button class="qcolor" data-c="#FF0066" style="background:#FF0066" title="Pink"></button>
+              <button class="qcolor" data-c="#FFFFFF" style="background:#FFFFFF" title="White"></button>
+              <button class="qcolor" data-c="#FFAA44" style="background:#FFAA44" title="Warm White"></button>
+              <button class="qcolor" data-c="#AADDFF" style="background:#AADDFF" title="Cool White"></button>
+            </div>
           </div>
           <div class="panel">
             <h2>Brightness</h2>
@@ -176,38 +190,54 @@
           </div>
 
           <div class="panel">
-            <h2>Audio Visualizer</h2>
-            <canvas id="audio-viz" width="400" height="80"></canvas>
+            <h2>Audio Source</h2>
+            <div class="audio-src-row">
+              <label class="radio-label">
+                <input type="radio" name="audio-src" value="mic" checked> Microphone
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="audio-src" value="system"> System Audio (screen share)
+              </label>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="viz-header">
+              <h2>Live Output</h2>
+              <div id="viz-color-swatch" class="viz-swatch"></div>
+            </div>
+            <canvas id="audio-viz" width="600" height="100"></canvas>
           </div>
         </div>
       </section>
 
       <!-- ANIMATION -->
       <section id="tab-animation" class="tab-content">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Timeline Editor</h2>
-            <div class="anim-controls">
-              <button id="anim-play" class="btn btn-small btn-success" title="Play">&#9654;</button>
-              <button id="anim-pause" class="btn btn-small" title="Pause">&#9646;&#9646;</button>
-              <button id="anim-stop" class="btn btn-small btn-danger" title="Stop">&#9632;</button>
-              <span class="sep"></span>
-              <label class="inline-label">
-                <input type="number" id="anim-duration" value="5000" min="500" max="60000" step="100" class="input-small"> ms
-              </label>
+        <div class="panel anim-main-panel">
+          <!-- Transport bar -->
+          <div class="transport-bar">
+            <div class="transport-left">
+              <button id="anim-play" class="btn btn-transport btn-success" title="Play">&#9654;</button>
+              <button id="anim-pause" class="btn btn-transport" title="Pause">&#10074;&#10074;</button>
+              <button id="anim-stop" class="btn btn-transport btn-danger" title="Stop">&#9632;</button>
+            </div>
+            <div class="transport-center">
+              <div id="time-display" class="time-display">0.00s / 5.00s</div>
+            </div>
+            <div class="transport-right">
+              <input type="number" id="anim-duration" value="5000" min="500" max="60000" step="100" class="input-small" title="Duration (ms)">
+              <span class="transport-label">ms</span>
               <select id="anim-loop" class="input-small">
                 <option value="infinite" selected>Loop</option>
                 <option value="once">Once</option>
                 <option value="pingpong">Ping-Pong</option>
               </select>
-              <label class="inline-label" title="Send colors to device during playback">
-                <input type="checkbox" id="anim-live" checked> Live
+              <label class="transport-live" title="Send to device during playback">
+                <input type="checkbox" id="anim-live" checked>
+                <span>Live</span>
               </label>
             </div>
           </div>
-
-          <!-- Time display -->
-          <div id="time-display" class="time-display">0.00s / 5.00s</div>
 
           <!-- Timeline -->
           <div id="timeline-container">
@@ -217,30 +247,51 @@
             <div id="scrubber-handle" title="Drag to scrub"></div>
           </div>
 
-          <!-- Toolbar -->
-          <div class="timeline-toolbar">
-            <button id="kf-add" class="btn btn-small btn-primary">+ Keyframe</button>
-            <button id="kf-delete" class="btn btn-small btn-danger">Delete</button>
-            <select id="kf-segment" class="input-small">
-              <option value="0">Track 1</option>
-              <option value="1">Track 2</option>
-              <option value="2">Track 3</option>
-              <option value="3">Track 4</option>
-              <option value="4">Track 5</option>
-            </select>
-            <select id="kf-interp" class="input-small">
-              <option value="smooth">Smooth</option>
-              <option value="step">Step</option>
-            </select>
-            <input type="color" id="kf-color" value="#ff0000" class="input-color">
-            <div class="anim-preview-box">
-              <canvas id="anim-preview" width="40" height="120"></canvas>
+          <!-- Keyframe toolbar -->
+          <div class="kf-toolbar">
+            <div class="kf-toolbar-left">
+              <button id="kf-add" class="btn btn-small btn-primary">+ Keyframe</button>
+              <button id="kf-delete" class="btn btn-small btn-danger">Delete</button>
+              <button id="kf-clear" class="btn btn-small" title="Clear all keyframes">Clear</button>
+              <select id="kf-segment" class="input-small" title="Target track">
+                <option value="0">T1</option>
+                <option value="1">T2</option>
+                <option value="2">T3</option>
+                <option value="3">T4</option>
+                <option value="4">T5</option>
+              </select>
+              <select id="kf-interp" class="input-small" title="Interpolation">
+                <option value="smooth">Smooth</option>
+                <option value="step">Step</option>
+              </select>
+              <input type="color" id="kf-color" value="#ff0000" class="input-color" title="Keyframe color">
+            </div>
+            <div class="kf-toolbar-right">
+              <!-- Selected keyframe info -->
+              <div id="kf-info" class="kf-info">
+                <span id="kf-info-text" class="kf-info-text">No keyframe selected</span>
+                <label class="kf-time-label">
+                  t=<input type="number" id="kf-time-input" class="input-tiny" min="0" step="50" value="0" disabled>ms
+                </label>
+              </div>
+              <div class="anim-preview-box">
+                <canvas id="anim-preview" width="36" height="100"></canvas>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="panel">
-          <div class="save-row">
+          <h2>Templates</h2>
+          <div class="template-grid">
+            <button class="btn btn-small anim-template" data-tpl="rainbow">Rainbow Sweep</button>
+            <button class="btn btn-small anim-template" data-tpl="pulse">Color Pulse</button>
+            <button class="btn btn-small anim-template" data-tpl="fire">Fire</button>
+            <button class="btn btn-small anim-template" data-tpl="ocean">Ocean</button>
+            <button class="btn btn-small anim-template" data-tpl="strobe">Strobe</button>
+            <button class="btn btn-small anim-template" data-tpl="sunset">Sunset Fade</button>
+          </div>
+          <div class="save-row" style="margin-top:0.5rem">
             <input type="text" id="anim-name" placeholder="Animation name..." class="input-grow">
             <button id="anim-save" class="btn btn-primary">Save</button>
           </div>
@@ -278,6 +329,27 @@
             <button class="btn btn-small dev-exp" data-exp="cmd-0d">Cmd 0x0D (stream?)</button>
             <button class="btn btn-small dev-exp" data-exp="cmd-0e">Cmd 0x0E (toggle?)</button>
             <button class="btn btn-small dev-exp" data-exp="cmd-0f">Cmd 0x0F (EQ?)</button>
+            <button class="btn btn-small dev-exp" data-exp="symphony">Symphony 0x21</button>
+            <button class="btn btn-small dev-exp" data-exp="scene">Scene 0x31</button>
+            <button class="btn btn-small dev-exp" data-exp="mic-symphony">Mic + Symphony</button>
+          </div>
+
+          <h3 class="dev-section-title">MELK Scenes (0x31)</h3>
+          <div class="dev-grid">
+            <button class="btn btn-small dev-scene" data-id="0">Sunrise</button>
+            <button class="btn btn-small dev-scene" data-id="1">Sunset</button>
+            <button class="btn btn-small dev-scene" data-id="2">Birthday</button>
+            <button class="btn btn-small dev-scene" data-id="3">Candlelight</button>
+            <button class="btn btn-small dev-scene" data-id="4">Fireworks</button>
+            <button class="btn btn-small dev-scene" data-id="5">Party</button>
+            <button class="btn btn-small dev-scene" data-id="6">Disco</button>
+            <button class="btn btn-small dev-scene" data-id="7">Rainbow</button>
+            <button class="btn btn-small dev-scene" data-id="8">Movie</button>
+            <button class="btn btn-small dev-scene" data-id="9">Christmas</button>
+            <button class="btn btn-small dev-scene" data-id="10">Ocean</button>
+            <button class="btn btn-small dev-scene" data-id="11">Fire</button>
+            <button class="btn btn-small dev-scene" data-id="12">Lightning</button>
+            <button class="btn btn-small dev-scene" data-id="13">Halloween</button>
           </div>
 
           <div class="dev-row" style="margin-top:0.75rem">
@@ -296,6 +368,11 @@
             <input type="color" id="dev-color" value="#ff0000" class="input-color">
             <label class="dev-label">Param</label>
             <input type="number" id="dev-param" value="50" min="0" max="255" class="input-small">
+          </div>
+          <div class="dev-row">
+            <label class="dev-label">Symphony Point (10-1000)</label>
+            <input type="range" id="dev-symphony" min="10" max="1000" value="500" class="slider" style="flex:1">
+            <span id="dev-symphony-val" class="slider-val">500</span>
           </div>
         </div>
 

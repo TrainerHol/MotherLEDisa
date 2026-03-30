@@ -124,6 +124,15 @@ const BLE = (() => {
     micEffect:    (id) => [0x7E, 0x05, 0x03, id&0xFF, 0x04, 0xFF, 0xFF, 0x00, 0xEF],
     micSensitivity:(v) => [0x7E, 0x04, 0x06, clamp(v,0,100), 0xFF, 0xFF, 0xFF, 0x00, 0xEF],
     disableEffects: () => [0x7E, 0x00, 0x05, 0x01, 0x00, 0x00, 0x00, 0x00, 0xEF],
+
+    // MELK-OA21 extended commands
+    // Symphony: audio sync point (10-1000, little-endian 16-bit)
+    setSymphony: (point) => {
+      const p = Math.max(10, Math.min(1000, Math.round(point)));
+      return [0x7E, 0x07, 0x21, p & 0xFF, (p >> 8) & 0xFF, 0x00, 0x00, 0x00, 0xEF];
+    },
+    // Scene: 28 preset scenes (0-27)
+    setScene: (id) => [0x7E, 0x05, 0x31, id & 0xFF, 0x07, 0xFF, 0xFF, 0x01, 0xEF],
   };
 
   // High-level API
@@ -216,6 +225,32 @@ const BLE = (() => {
     console.log('[BLE:EXP] Set brightness during mic mode');
   }
 
+  // Test: symphony command (MELK-OA21 audio sync point)
+  async function testSymphony(t, point) {
+    const cmd = CMD.setSymphony(point);
+    console.log('[BLE:EXP] Symphony point', point, '->', cmd.map(b=>b.toString(16).padStart(2,'0')).join(' '));
+    await writeTarget(t, cmd);
+  }
+
+  // Test: scene command (MELK-OA21 preset scenes)
+  async function testScene(t, sceneId) {
+    const cmd = CMD.setScene(sceneId);
+    console.log('[BLE:EXP] Scene', sceneId, '->', cmd.map(b=>b.toString(16).padStart(2,'0')).join(' '));
+    await writeTarget(t, cmd);
+  }
+
+  // Test: symphony while mic is active
+  async function testMicWithSymphony(t, micEffect, sensitivity, symphonyPoint) {
+    await writeTarget(t, CMD.micEnable());
+    await sleep(50);
+    await writeTarget(t, CMD.micEffect(micEffect));
+    await sleep(50);
+    await writeTarget(t, CMD.micSensitivity(sensitivity));
+    await sleep(50);
+    await writeTarget(t, CMD.setSymphony(symphonyPoint));
+    console.log('[BLE:EXP] Mic + Symphony point', symphonyPoint);
+  }
+
   // Test: speed during mic mode
   async function testMicWithSpeed(t, effectId, sensitivity, speed) {
     await writeTarget(t, CMD.micEnable());
@@ -275,6 +310,7 @@ const BLE = (() => {
     sendRaw, testMicWithColor, testColorThenMic,
     testStreamCmd, testMicWithEffect,
     testMicWithBrightness, testMicWithSpeed,
+    testSymphony, testScene, testMicWithSymphony,
     write, writeAll, writeTarget,
     CMD, EFFECTS, MIC_EFFECTS, devices, sleep,
   };

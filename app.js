@@ -144,6 +144,18 @@
     colorHex.value = hex;
   }
 
+  // Quick color swatches
+  document.querySelectorAll('.qcolor').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.qcolor').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const rgb = Animation.hexToRgb(btn.dataset.c);
+      currentColor = rgb;
+      updateColorUI();
+      BLE.setColor(document.getElementById('control-target').value, rgb.r, rgb.g, rgb.b);
+    });
+  });
+
   // Power
   document.getElementById('btn-power-on').onclick = () => BLE.powerOn(document.getElementById('control-target').value);
   document.getElementById('btn-power-off').onclick = () => BLE.powerOff(document.getElementById('control-target').value);
@@ -273,26 +285,50 @@
       try {
         const c1 = Animation.hexToRgb(document.getElementById('custom-color1').value);
         const c2 = Animation.hexToRgb(document.getElementById('custom-color2').value);
+        const useSystem = document.querySelector('input[name="audio-src"]:checked').value === 'system';
         await AudioReactive.start({
           mode: selectedCustomMode,
           color1: c1, color2: c2,
           sensitivity: +document.getElementById('custom-sensitivity').value,
           sendRate: +document.getElementById('custom-rate').value,
+          useSystemAudio: useSystem,
         });
 
-        // Visualizer
+        // Visualizer with gradient bars and color swatch
         const vizCanvas = document.getElementById('audio-viz');
         const vizCtx = vizCanvas.getContext('2d');
-        AudioReactive.onFrame(({ color, freqData }) => {
-          vizCtx.fillStyle = '#111';
+        const swatch = document.getElementById('viz-color-swatch');
+        AudioReactive.onFrame(({ color, freqData, rms }) => {
+          // Background
+          vizCtx.fillStyle = '#0a0e14';
           vizCtx.fillRect(0, 0, vizCanvas.width, vizCanvas.height);
-          const barW = vizCanvas.width / freqData.length;
-          const hex = `rgb(${color.r},${color.g},${color.b})`;
+
+          // Frequency bars with gradient
+          const barW = Math.max(2, vizCanvas.width / freqData.length - 1);
           for (let i = 0; i < freqData.length; i++) {
             const h = (freqData[i] / 255) * vizCanvas.height;
-            vizCtx.fillStyle = hex;
-            vizCtx.fillRect(i * barW, vizCanvas.height - h, barW - 1, h);
+            const x = i * (barW + 1);
+            // Color gradient from bottom (dim) to top (bright)
+            const grad = vizCtx.createLinearGradient(x, vizCanvas.height, x, vizCanvas.height - h);
+            grad.addColorStop(0, `rgba(${color.r},${color.g},${color.b},0.3)`);
+            grad.addColorStop(1, `rgb(${color.r},${color.g},${color.b})`);
+            vizCtx.fillStyle = grad;
+            vizCtx.fillRect(x, vizCanvas.height - h, barW, h);
           }
+
+          // RMS level indicator line
+          const rmsY = vizCanvas.height - (Math.min(1, rms * 2) * vizCanvas.height);
+          vizCtx.strokeStyle = `rgba(${color.r},${color.g},${color.b},0.5)`;
+          vizCtx.lineWidth = 1;
+          vizCtx.setLineDash([4, 4]);
+          vizCtx.beginPath();
+          vizCtx.moveTo(0, rmsY);
+          vizCtx.lineTo(vizCanvas.width, rmsY);
+          vizCtx.stroke();
+          vizCtx.setLineDash([]);
+
+          // Update swatch
+          swatch.style.background = `rgb(${color.r},${color.g},${color.b})`;
         });
 
         customSoundActive = true;
@@ -406,6 +442,7 @@
           selectedKeyframe = kf.id;
           document.getElementById('kf-color').value = kf.color;
           document.getElementById('kf-interp').value = kf.interpolation;
+          updateKfInfo();
           renderTimeline();
           startKfDrag(kf, lane, e);
         });
@@ -505,6 +542,33 @@
       `${(t / 1000).toFixed(2)}s / ${(currentAnimation.durationMs / 1000).toFixed(2)}s`;
   }
 
+  // Keyframe info display
+  function updateKfInfo() {
+    const infoText = document.getElementById('kf-info-text');
+    const timeInput = document.getElementById('kf-time-input');
+    if (!selectedKeyframe) {
+      infoText.textContent = 'No keyframe selected';
+      timeInput.disabled = true;
+      timeInput.value = 0;
+      return;
+    }
+    const kf = currentAnimation.keyframes.find(k => k.id === selectedKeyframe);
+    if (!kf) { selectedKeyframe = null; updateKfInfo(); return; }
+    infoText.textContent = `T${kf.segment + 1} | ${kf.interpolation}`;
+    timeInput.disabled = false;
+    timeInput.value = kf.timeMs;
+    timeInput.max = currentAnimation.durationMs;
+  }
+
+  // Keyframe time input
+  document.getElementById('kf-time-input').addEventListener('change', () => {
+    const kf = currentAnimation.keyframes.find(k => k.id === selectedKeyframe);
+    if (kf) {
+      kf.timeMs = Math.max(0, Math.min(currentAnimation.durationMs, +document.getElementById('kf-time-input').value));
+      renderTimeline();
+    }
+  });
+
   // Add keyframe
   document.getElementById('kf-add').addEventListener('click', () => {
     const seg = +document.getElementById('kf-segment').value;
@@ -516,6 +580,7 @@
     currentAnimation.keyframes.push(kf);
     selectedKeyframe = kf.id;
     renderTimeline();
+    updateKfInfo();
   });
 
   // Delete keyframe
@@ -524,6 +589,16 @@
     currentAnimation.keyframes = currentAnimation.keyframes.filter(k => k.id !== selectedKeyframe);
     selectedKeyframe = null;
     renderTimeline();
+    updateKfInfo();
+  });
+
+  // Clear all keyframes
+  document.getElementById('kf-clear').addEventListener('click', () => {
+    if (currentAnimation.keyframes.length === 0) return;
+    currentAnimation.keyframes = [];
+    selectedKeyframe = null;
+    renderTimeline();
+    updateKfInfo();
   });
 
   // Update selected keyframe properties
@@ -534,7 +609,7 @@
 
   document.getElementById('kf-interp').addEventListener('change', () => {
     const kf = currentAnimation.keyframes.find(k => k.id === selectedKeyframe);
-    if (kf) { kf.interpolation = document.getElementById('kf-interp').value; renderTimeline(); }
+    if (kf) { kf.interpolation = document.getElementById('kf-interp').value; renderTimeline(); updateKfInfo(); }
   });
 
   // Duration
@@ -585,6 +660,58 @@
     setPlayheadTime(0);
     renderPreviewCanvas();
   };
+
+  // Animation templates
+  const TEMPLATES = {
+    rainbow: { duration: 4000, keyframes: [
+      { t: 0, s: 0, c: '#ff0000' }, { t: 800, s: 0, c: '#ff8800' }, { t: 1600, s: 0, c: '#ffff00' },
+      { t: 2400, s: 0, c: '#00ff00' }, { t: 3200, s: 0, c: '#0088ff' }, { t: 4000, s: 0, c: '#ff0000' },
+    ]},
+    pulse: { duration: 2000, keyframes: [
+      { t: 0, s: 0, c: '#ff0044' }, { t: 500, s: 0, c: '#ff0044' },
+      { t: 600, s: 0, c: '#ffffff' }, { t: 800, s: 0, c: '#ff0044' },
+      { t: 1000, s: 0, c: '#0044ff' }, { t: 1500, s: 0, c: '#0044ff' },
+      { t: 1600, s: 0, c: '#ffffff' }, { t: 1800, s: 0, c: '#0044ff' },
+      { t: 2000, s: 0, c: '#ff0044' },
+    ]},
+    fire: { duration: 3000, keyframes: [
+      { t: 0, s: 0, c: '#ff2200' }, { t: 500, s: 0, c: '#ff6600' },
+      { t: 1000, s: 0, c: '#ffaa00' }, { t: 1500, s: 0, c: '#ff4400' },
+      { t: 2000, s: 0, c: '#ff8800' }, { t: 2500, s: 0, c: '#ff2200' },
+      { t: 3000, s: 0, c: '#ff2200' },
+    ]},
+    ocean: { duration: 5000, keyframes: [
+      { t: 0, s: 0, c: '#003366' }, { t: 1250, s: 0, c: '#0077aa' },
+      { t: 2500, s: 0, c: '#00bbcc' }, { t: 3750, s: 0, c: '#0077aa' },
+      { t: 5000, s: 0, c: '#003366' },
+    ]},
+    strobe: { duration: 1000, keyframes: [
+      { t: 0, s: 0, c: '#ffffff', i: 'step' }, { t: 125, s: 0, c: '#000000', i: 'step' },
+      { t: 250, s: 0, c: '#ffffff', i: 'step' }, { t: 375, s: 0, c: '#000000', i: 'step' },
+      { t: 500, s: 0, c: '#ffffff', i: 'step' }, { t: 625, s: 0, c: '#000000', i: 'step' },
+      { t: 750, s: 0, c: '#ffffff', i: 'step' }, { t: 875, s: 0, c: '#000000', i: 'step' },
+    ]},
+    sunset: { duration: 6000, keyframes: [
+      { t: 0, s: 0, c: '#ff4400' }, { t: 1500, s: 0, c: '#ff6644' },
+      { t: 3000, s: 0, c: '#cc3366' }, { t: 4500, s: 0, c: '#663399' },
+      { t: 6000, s: 0, c: '#1a1a44' },
+    ]},
+  };
+
+  document.querySelectorAll('.anim-template').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tpl = TEMPLATES[btn.dataset.tpl];
+      if (!tpl) return;
+      currentAnimation = Animation.createAnimation(btn.textContent, tpl.duration);
+      currentAnimation.keyframes = tpl.keyframes.map(k =>
+        Animation.createKeyframe(k.t, k.s, k.c, k.i || 'smooth')
+      );
+      document.getElementById('anim-duration').value = tpl.duration;
+      selectedKeyframe = null;
+      initTimeline();
+      updateKfInfo();
+    });
+  });
 
   // Save
   document.getElementById('anim-save').addEventListener('click', () => {
@@ -759,9 +886,37 @@
           await BLE.testStreamCmd(target, 0x0F, param);
           dlog(`Cmd 0x0F (external mic EQ?) param=${param}`);
           break;
+        case 'symphony':
+          const sp = +document.getElementById('dev-symphony').value;
+          await BLE.testSymphony(target, sp);
+          dlog(`Symphony point=${sp}`);
+          break;
+        case 'scene':
+          await BLE.testScene(target, param);
+          dlog(`Scene id=${param}`);
+          break;
+        case 'mic-symphony':
+          const sp2 = +document.getElementById('dev-symphony').value;
+          await BLE.testMicWithSymphony(target, micEff, param, sp2);
+          dlog(`Mic 0x${micEff.toString(16)} + Symphony point=${sp2}`);
+          break;
       }
     });
   });
+
+  // Scene buttons
+  document.querySelectorAll('.dev-scene').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = +btn.dataset.id;
+      dlog(`Scene ${id}: ${btn.textContent}`, 'log-info');
+      await BLE.testScene('all', id);
+    });
+  });
+
+  // Symphony slider live update
+  const symSlider = document.getElementById('dev-symphony');
+  const symVal = document.getElementById('dev-symphony-val');
+  symSlider.addEventListener('input', () => symVal.textContent = symSlider.value);
 
   document.getElementById('dev-clear-log').onclick = () => devLog.innerHTML = '';
 
