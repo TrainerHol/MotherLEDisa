@@ -301,9 +301,18 @@
       <!-- PRESETS -->
       <section id="tab-presets" class="tab-content">
         <div class="panel">
-          <h2>Saved Animations</h2>
+          <div class="panel-header">
+            <h2>Saved Animations</h2>
+            <div class="preset-actions-top">
+              <button id="preset-export" class="btn btn-small" title="Export all presets as JSON">Export</button>
+              <label class="btn btn-small" title="Import presets from JSON file">
+                Import
+                <input type="file" id="preset-import" accept=".json" hidden>
+              </label>
+            </div>
+          </div>
           <div id="preset-list" class="preset-grid"></div>
-          <p id="no-presets" class="hint">No presets yet. Create animations in the Animation tab.</p>
+          <p id="no-presets" class="hint">No presets yet. Create animations in the Animation tab, or import a JSON file.</p>
         </div>
       </section>
 

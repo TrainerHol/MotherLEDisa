@@ -675,6 +675,7 @@ header h1 {
 }
 
 .preset-actions { display: flex; gap: 0.3rem; }
+.preset-actions-top { display: flex; gap: 0.35rem; }
 
 /* Sound source tabs */
 .sound-source-tabs {

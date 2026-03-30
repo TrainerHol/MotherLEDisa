@@ -804,6 +804,38 @@
     });
   }
 
+  // Export presets as JSON file
+  document.getElementById('preset-export').addEventListener('click', () => {
+    const presets = loadPresets();
+    if (!presets.length) return alert('No presets to export.');
+    const blob = new Blob([JSON.stringify(presets, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `motherledisa-presets-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // Import presets from JSON file
+  document.getElementById('preset-import').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const imported = JSON.parse(text);
+      if (!Array.isArray(imported)) throw new Error('Invalid format');
+      const existing = loadPresets();
+      const merged = [...existing, ...imported];
+      savePresetsStore(merged);
+      renderPresets();
+      alert(`Imported ${imported.length} preset(s).`);
+    } catch (err) {
+      alert('Import failed: ' + err.message);
+    }
+    e.target.value = '';
+  });
+
   // ======================
   // DEV / PROTOCOL EXPLORER
   // ======================
