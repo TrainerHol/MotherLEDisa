@@ -278,6 +278,27 @@
             <button class="btn btn-small dev-exp" data-exp="cmd-0d">Cmd 0x0D (stream?)</button>
             <button class="btn btn-small dev-exp" data-exp="cmd-0e">Cmd 0x0E (toggle?)</button>
             <button class="btn btn-small dev-exp" data-exp="cmd-0f">Cmd 0x0F (EQ?)</button>
+            <button class="btn btn-small dev-exp" data-exp="symphony">Symphony 0x21</button>
+            <button class="btn btn-small dev-exp" data-exp="scene">Scene 0x31</button>
+            <button class="btn btn-small dev-exp" data-exp="mic-symphony">Mic + Symphony</button>
+          </div>
+
+          <h3 class="dev-section-title">MELK Scenes (0x31)</h3>
+          <div class="dev-grid">
+            <button class="btn btn-small dev-scene" data-id="0">Sunrise</button>
+            <button class="btn btn-small dev-scene" data-id="1">Sunset</button>
+            <button class="btn btn-small dev-scene" data-id="2">Birthday</button>
+            <button class="btn btn-small dev-scene" data-id="3">Candlelight</button>
+            <button class="btn btn-small dev-scene" data-id="4">Fireworks</button>
+            <button class="btn btn-small dev-scene" data-id="5">Party</button>
+            <button class="btn btn-small dev-scene" data-id="6">Disco</button>
+            <button class="btn btn-small dev-scene" data-id="7">Rainbow</button>
+            <button class="btn btn-small dev-scene" data-id="8">Movie</button>
+            <button class="btn btn-small dev-scene" data-id="9">Christmas</button>
+            <button class="btn btn-small dev-scene" data-id="10">Ocean</button>
+            <button class="btn btn-small dev-scene" data-id="11">Fire</button>
+            <button class="btn btn-small dev-scene" data-id="12">Lightning</button>
+            <button class="btn btn-small dev-scene" data-id="13">Halloween</button>
           </div>
 
           <div class="dev-row" style="margin-top:0.75rem">
@@ -296,6 +317,11 @@
             <input type="color" id="dev-color" value="#ff0000" class="input-color">
             <label class="dev-label">Param</label>
             <input type="number" id="dev-param" value="50" min="0" max="255" class="input-small">
+          </div>
+          <div class="dev-row">
+            <label class="dev-label">Symphony Point (10-1000)</label>
+            <input type="range" id="dev-symphony" min="10" max="1000" value="500" class="slider" style="flex:1">
+            <span id="dev-symphony-val" class="slider-val">500</span>
           </div>
         </div>
 

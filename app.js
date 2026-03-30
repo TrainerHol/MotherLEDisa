@@ -759,9 +759,37 @@
           await BLE.testStreamCmd(target, 0x0F, param);
           dlog(`Cmd 0x0F (external mic EQ?) param=${param}`);
           break;
+        case 'symphony':
+          const sp = +document.getElementById('dev-symphony').value;
+          await BLE.testSymphony(target, sp);
+          dlog(`Symphony point=${sp}`);
+          break;
+        case 'scene':
+          await BLE.testScene(target, param);
+          dlog(`Scene id=${param}`);
+          break;
+        case 'mic-symphony':
+          const sp2 = +document.getElementById('dev-symphony').value;
+          await BLE.testMicWithSymphony(target, micEff, param, sp2);
+          dlog(`Mic 0x${micEff.toString(16)} + Symphony point=${sp2}`);
+          break;
       }
     });
   });
+
+  // Scene buttons
+  document.querySelectorAll('.dev-scene').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = +btn.dataset.id;
+      dlog(`Scene ${id}: ${btn.textContent}`, 'log-info');
+      await BLE.testScene('all', id);
+    });
+  });
+
+  // Symphony slider live update
+  const symSlider = document.getElementById('dev-symphony');
+  const symVal = document.getElementById('dev-symphony-val');
+  symSlider.addEventListener('input', () => symVal.textContent = symSlider.value);
 
   document.getElementById('dev-clear-log').onclick = () => devLog.innerHTML = '';
 
