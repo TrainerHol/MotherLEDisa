@@ -23,6 +23,7 @@
       <button class="tab" data-tab="sound">Sound</button>
       <button class="tab" data-tab="animation">Animation</button>
       <button class="tab" data-tab="presets">Presets</button>
+      <button class="tab" data-tab="dev">Dev</button>
     </nav>
 
     <main>
@@ -252,6 +253,56 @@
           <h2>Saved Animations</h2>
           <div id="preset-list" class="preset-grid"></div>
           <p id="no-presets" class="hint">No presets yet. Create animations in the Animation tab.</p>
+        </div>
+      </section>
+
+      <!-- DEV / PROTOCOL EXPLORER -->
+      <section id="tab-dev" class="tab-content">
+        <div class="panel">
+          <h2>Protocol Explorer</h2>
+          <p class="hint">Send raw 9-byte BLE commands to reverse-engineer the MELK-OT21 protocol. All commands are [0x7E, b1, CMD, p1, p2, p3, p4, b7, 0xEF].</p>
+
+          <div class="dev-row">
+            <label class="dev-label">Raw Hex (9 bytes)</label>
+            <input type="text" id="dev-raw" class="input-grow mono" placeholder="7E 04 07 01 FF FF FF 00 EF" value="7E 04 07 01 FF FF FF 00 EF">
+            <button id="dev-send-raw" class="btn btn-primary btn-small">Send</button>
+          </div>
+
+          <h3 class="dev-section-title">Quick Experiments</h3>
+          <div class="dev-grid">
+            <button class="btn btn-small dev-exp" data-exp="mic-then-color">Mic + Color overlay</button>
+            <button class="btn btn-small dev-exp" data-exp="color-then-mic">Color then Mic</button>
+            <button class="btn btn-small dev-exp" data-exp="mic-with-effect">Mic + HW Effect</button>
+            <button class="btn btn-small dev-exp" data-exp="mic-brightness">Mic + Brightness</button>
+            <button class="btn btn-small dev-exp" data-exp="mic-speed">Mic + Speed</button>
+            <button class="btn btn-small dev-exp" data-exp="cmd-0d">Cmd 0x0D (stream?)</button>
+            <button class="btn btn-small dev-exp" data-exp="cmd-0e">Cmd 0x0E (toggle?)</button>
+            <button class="btn btn-small dev-exp" data-exp="cmd-0f">Cmd 0x0F (EQ?)</button>
+          </div>
+
+          <div class="dev-row" style="margin-top:0.75rem">
+            <label class="dev-label">Mic Effect</label>
+            <select id="dev-mic-effect" class="input-small">
+              <option value="128">0x80 Energetic</option>
+              <option value="129">0x81 Rhythm</option>
+              <option value="130">0x82 Spectrum</option>
+              <option value="131">0x83 Rolling</option>
+              <option value="132">0x84 Pulse</option>
+              <option value="133">0x85 Cascade</option>
+              <option value="134">0x86 Rainbow</option>
+              <option value="135">0x87 Wave</option>
+            </select>
+            <label class="dev-label">Color</label>
+            <input type="color" id="dev-color" value="#ff0000" class="input-color">
+            <label class="dev-label">Param</label>
+            <input type="number" id="dev-param" value="50" min="0" max="255" class="input-small">
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Command Log</h2>
+          <div id="dev-log" class="dev-log"></div>
+          <button id="dev-clear-log" class="btn btn-small" style="margin-top:0.5rem">Clear</button>
         </div>
       </section>
     </main>

@@ -677,6 +677,94 @@
     });
   }
 
+  // ======================
+  // DEV / PROTOCOL EXPLORER
+  // ======================
+  const devLog = document.getElementById('dev-log');
+  function dlog(msg, cls = '') {
+    const line = document.createElement('div');
+    if (cls) line.className = cls;
+    line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    devLog.appendChild(line);
+    devLog.scrollTop = devLog.scrollHeight;
+  }
+
+  // Intercept BLE console logs for the dev panel
+  const origWarn = console.warn;
+  const origLog = console.log;
+  console.log = (...args) => {
+    origLog(...args);
+    const msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+    if (msg.includes('[BLE')) dlog(msg, 'log-info');
+  };
+  console.warn = (...args) => {
+    origWarn(...args);
+    const msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+    if (msg.includes('[BLE')) dlog(msg, 'log-err');
+  };
+
+  // Send raw hex
+  document.getElementById('dev-send-raw').addEventListener('click', () => {
+    const hex = document.getElementById('dev-raw').value.trim();
+    const bytes = hex.split(/\s+/).map(h => parseInt(h, 16));
+    if (bytes.length !== 9 || bytes.some(isNaN)) {
+      dlog('ERROR: Need exactly 9 hex bytes', 'log-err');
+      return;
+    }
+    dlog(`TX: ${bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
+    BLE.sendRaw('all', bytes);
+  });
+
+  // Quick experiments
+  document.querySelectorAll('.dev-exp').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const exp = btn.dataset.exp;
+      const micEff = +document.getElementById('dev-mic-effect').value;
+      const param = +document.getElementById('dev-param').value;
+      const rgb = Animation.hexToRgb(document.getElementById('dev-color').value);
+      const target = 'all';
+
+      dlog(`Running experiment: ${exp}`, 'log-info');
+
+      switch (exp) {
+        case 'mic-then-color':
+          await BLE.testMicWithColor(target, micEff, param, rgb.r, rgb.g, rgb.b);
+          dlog(`Mic effect 0x${micEff.toString(16)} + color rgb(${rgb.r},${rgb.g},${rgb.b})`);
+          break;
+        case 'color-then-mic':
+          await BLE.testColorThenMic(target, rgb.r, rgb.g, rgb.b, micEff, param);
+          dlog(`Color rgb(${rgb.r},${rgb.g},${rgb.b}) then mic effect 0x${micEff.toString(16)}`);
+          break;
+        case 'mic-with-effect':
+          await BLE.testMicWithEffect(target, micEff, 0x89, param, 70);
+          dlog(`Mic 0x${micEff.toString(16)} + HW effect 0x89 (Crossfade RGB)`);
+          break;
+        case 'mic-brightness':
+          await BLE.testMicWithBrightness(target, micEff, 70, param);
+          dlog(`Mic 0x${micEff.toString(16)} + brightness ${param}`);
+          break;
+        case 'mic-speed':
+          await BLE.testMicWithSpeed(target, micEff, 70, param);
+          dlog(`Mic 0x${micEff.toString(16)} + speed ${param}`);
+          break;
+        case 'cmd-0d':
+          await BLE.testStreamCmd(target, 0x0D, param);
+          dlog(`Cmd 0x0D (streaming mic sensitivity?) param=${param}`);
+          break;
+        case 'cmd-0e':
+          await BLE.testStreamCmd(target, 0x0E, param);
+          dlog(`Cmd 0x0E (toggle streaming?) param=${param}`);
+          break;
+        case 'cmd-0f':
+          await BLE.testStreamCmd(target, 0x0F, param);
+          dlog(`Cmd 0x0F (external mic EQ?) param=${param}`);
+          break;
+      }
+    });
+  });
+
+  document.getElementById('dev-clear-log').onclick = () => devLog.innerHTML = '';
+
   // --- Init ---
   updateColorUI();
   initTimeline();
